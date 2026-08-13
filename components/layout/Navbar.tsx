@@ -48,8 +48,8 @@ export default function Navbar() {
               ESC
             </div>
             <div className="leading-tight">
-              <span className="block text-sm font-bold text-gray-900 tracking-tight">
-                ESC Utility Services
+              <span className="block text-sm font-bold text-gray-900 tracking-tight whitespace-nowrap">
+                ESC Utility Services Pvt. Ltd
               </span>
               <span className="block text-[10px] text-gray-500 tracking-widest uppercase">
                 Indo-German Technology Partner

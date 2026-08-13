@@ -5,6 +5,7 @@ const services = [
   'Generative AI',
   'Intelligent Automation',
   'IT Back-Office Services',
+  'Market Research & Analysis',
 ]
 
 const quickLinks = [

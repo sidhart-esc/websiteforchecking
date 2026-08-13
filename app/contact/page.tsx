@@ -1,5 +1,6 @@
 'use client'
 
+import PageTransition from '@/components/ui/PageTransition'
 import { useState } from 'react'
 
 export default function ContactPage() {
@@ -53,6 +54,7 @@ export default function ContactPage() {
   ]
 
   return (
+    <PageTransition>
     <>
       {/* Hero */}
       <section className="bg-[#0f1117] pt-32 pb-20">
@@ -216,6 +218,7 @@ export default function ContactPage() {
                       <option value="ai">Generative AI</option>
                       <option value="automation">Intelligent Automation</option>
                       <option value="backoffice">IT Back-Office Services</option>
+                      <option value="market">Market Research & Analysis</option>
                       <option value="other">Other / Not sure yet</option>
                     </select>
                   </div>
@@ -256,5 +259,6 @@ export default function ContactPage() {
         </div>
       </section>
     </>
+    </PageTransition>
   )
 }

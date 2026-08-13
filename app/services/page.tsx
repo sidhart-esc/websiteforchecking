@@ -1,11 +1,16 @@
-import Link from 'next/link'
+'use client'
+
+import Image from 'next/image'
+import { useRef } from 'react'
+import { motion, useScroll, useTransform, MotionValue } from 'framer-motion'
 import CTAStrip from '@/components/sections/CTAStrip'
+import PageTransition from '@/components/ui/PageTransition'
+import AnimateOnScroll from '@/components/ui/AnimateOnScroll'
 
 const services = [
   {
-    icon: '⚙️',
     title: 'Software Engineering',
-    tagline: 'Built for utility-grade reliability',
+    image: '/images/softwareengineering.png',
     description:
       'We design and develop custom software solutions tailored to the complex operational needs of Energy and Water organizations. From SCADA integrations to enterprise platforms, we build systems that are secure, scalable, and built to last decades.',
     capabilities: [
@@ -17,9 +22,8 @@ const services = [
     ],
   },
   {
-    icon: '🤖',
     title: 'Generative AI',
-    tagline: 'Intelligence for critical infrastructure',
+    image: '/images/generative ai.png',
     description:
       'We help Energy and Water organizations harness Generative AI responsibly — automating insight generation, enabling predictive maintenance, and building AI-powered tools that augment your team\'s capabilities without replacing domain expertise.',
     capabilities: [
@@ -31,9 +35,8 @@ const services = [
     ],
   },
   {
-    icon: '🔄',
     title: 'Intelligent Automation',
-    tagline: 'Eliminate bottlenecks at scale',
+    image: '/images/automation.png',
     description:
       'Our automation practice helps utility organizations eliminate repetitive manual work, reduce errors, and free up your team for higher-value tasks. We combine RPA, workflow automation, and AI to deliver end-to-end process transformation.',
     capabilities: [
@@ -45,9 +48,8 @@ const services = [
     ],
   },
   {
-    icon: '🖥️',
     title: 'IT Back-Office Services',
-    tagline: 'Reliable operations, around the clock',
+    image: '/images/sap.png',
     description:
       'We provide dedicated IT back-office support tailored for utility organizations — from infrastructure management to helpdesk operations. Our Indo-German delivery model ensures quality European standards at competitive costs.',
     capabilities: [
@@ -58,82 +60,212 @@ const services = [
       'Vendor & license management',
     ],
   },
+  {
+    title: 'Market Research & Analysis',
+    image: '/images/market.png',
+    description:
+      'We transform web-based market research into actionable business intelligence through systematic data capture, validation, analysis, and authentication — aligned with each client\'s specific requirements.',
+    capabilities: [
+      'Web-based market research',
+      'Systematic data capture & validation',
+      'Business intelligence & analytics',
+      'Data authentication & verification',
+      'Custom market insights reporting',
+    ],
+  },
 ]
 
-export default function ServicesPage() {
+const CinematicServiceSequence = ({ service, index, totalServices, progress }: { service: any, index: number, totalServices: number, progress: MotionValue<number> }) => {
+  // Dynamic step per service based on total length
+  const step = 1 / totalServices
+  const start = index * step
+  
+  // Timing within each step interval: 
+  // 1. Image fades in first
+  const imgFadeInStart = start
+  const imgFadeInEnd = start + step * 0.16
+  
+  // 2. Text fades in after Image
+  const textFadeInStart = start + step * 0.24
+  const textFadeInEnd = start + step * 0.40
+  
+  // 3. Both fade out together
+  const fadeOutStart = start + step * 0.80
+  const fadeOutEnd = start + step * 0.96
+
+  // Opacity maps - strictly 4 points so Framer Motion correctly clamps out-of-bounds progress to 0
+  const textOpacity = useTransform(
+    progress,
+    [textFadeInStart, textFadeInEnd, fadeOutStart, fadeOutEnd],
+    [0, 1, 1, 0]
+  )
+
+  const imageOpacity = useTransform(
+    progress,
+    [imgFadeInStart, imgFadeInEnd, fadeOutStart, fadeOutEnd],
+    [0, 1, 1, 0]
+  )
+  
+  // Subtle cinematic zoom on the image while it is visible
+  const imageScale = useTransform(
+    progress,
+    [imgFadeInStart, fadeOutEnd],
+    [1.08, 1.0]
+  )
+
+  // Floating text effect
+  const textY = useTransform(
+    progress,
+    [textFadeInStart, textFadeInEnd],
+    [30, 0]
+  )
+
   return (
     <>
-      {/* Page Hero */}
-      <section className="bg-[#0f1117] pt-32 pb-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center gap-2 mb-4">
-            <div className="w-8 h-[2px]" style={{ backgroundColor: '#962228' }} />
-            <span className="text-xs font-semibold tracking-[0.2em] uppercase text-gray-400">
-              What We Offer
-            </span>
-          </div>
-          <h1 className="text-4xl sm:text-5xl font-light text-white mb-6">
-            Our{' '}
-            <span className="font-bold" style={{ color: '#962228' }}>
-              Services
-            </span>
-          </h1>
-          <p className="text-gray-400 text-lg max-w-2xl leading-relaxed">
-            Specialized technology services built exclusively for the Energy
-            and Water industry — delivered with Indo-German precision.
+      {/* IMAGE LAYER (Full Screen for maximum projection) */}
+      <motion.div
+        style={{ opacity: imageOpacity, scale: imageScale }}
+        className="absolute inset-0 z-10 pointer-events-none"
+      >
+        <Image 
+          src={service.image} 
+          alt={service.title} 
+          fill 
+          className="object-cover object-right lg:object-center" 
+          priority={index === 0} 
+          unoptimized={true}
+        />
+        {/* Gradient that creates a dark anchor on the left for text, but leaves the top/right entirely clear */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-transparent w-full lg:w-[70%]" />
+      </motion.div>
+
+      {/* TEXT LAYER (Anchored to the Left) */}
+      <motion.div
+        style={{ opacity: textOpacity, y: textY }}
+        className="absolute inset-y-0 left-0 w-full lg:w-[50%] flex items-center justify-center p-8 sm:p-12 lg:p-20 z-20 pointer-events-none"
+      >
+        <div className="w-full text-left">
+          <h2 className="text-5xl sm:text-6xl lg:text-7xl font-light text-white mb-8 tracking-tight leading-tight">
+            {service.title.split(' ').map((word: string, i: number, arr: string[]) => (
+              <span key={i} className={i === arr.length - 1 ? 'font-bold' : ''} style={{ color: i === arr.length - 1 ? '#e0575f' : 'white' }}>
+                {word}{' '}
+              </span>
+            ))}
+          </h2>
+          <p className="text-gray-400 text-lg sm:text-xl leading-relaxed font-light mb-12 max-w-lg">
+            {service.description}
           </p>
-        </div>
-      </section>
-
-      {/* Services */}
-      <section className="bg-white py-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
-          {services.map((service, index) => (
-            <div
-              key={service.title}
-              className={`grid grid-cols-1 lg:grid-cols-2 gap-12 items-start pb-16 ${
-                index !== services.length - 1 ? 'border-b border-gray-100' : ''
-              }`}
-            >
-              {/* Left */}
-              <div>
-                <div className="text-4xl mb-4">{service.icon}</div>
-                <h2 className="text-2xl sm:text-3xl font-light text-gray-900 mb-2">
-                  <span className="font-bold" style={{ color: '#962228' }}>
-                    {service.title}
-                  </span>
-                </h2>
-                <p className="text-sm font-semibold text-gray-400 uppercase tracking-widest mb-4">
-                  {service.tagline}
-                </p>
-                <p className="text-gray-500 leading-relaxed">
-                  {service.description}
-                </p>
+          
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-4 gap-x-6 max-w-xl text-left">
+            {service.capabilities.map((cap: string) => (
+              <div key={cap} className="flex items-start gap-3">
+                <div
+                  className="w-1.5 h-1.5 rounded-full mt-2 flex-shrink-0"
+                  style={{ backgroundColor: '#e0575f' }}
+                />
+                <span className="text-sm sm:text-base text-gray-300">{cap}</span>
               </div>
-
-              {/* Right — Capabilities */}
-              <div className="bg-gray-50 rounded-xl p-8">
-                <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-6">
-                  Key Capabilities
-                </h3>
-                <ul className="space-y-3">
-                  {service.capabilities.map((cap) => (
-                    <li key={cap} className="flex items-start gap-3">
-                      <div
-                        className="w-1.5 h-1.5 rounded-full mt-2 flex-shrink-0"
-                        style={{ backgroundColor: '#962228' }}
-                      />
-                      <span className="text-sm text-gray-600">{cap}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-      </section>
-
-      <CTAStrip />
+      </motion.div>
     </>
+  )
+}
+
+export default function ServicesPage() {
+  const containerRef = useRef<HTMLDivElement>(null)
+  
+  // Track scroll progress exclusively through the 800vh container
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"]
+  })
+
+  return (
+    <PageTransition>
+      <div className="bg-black">
+        {/* Cinematic Header */}
+        <section className="relative pt-40 pb-32 overflow-hidden min-h-[60vh] flex items-center justify-start text-left">
+          {/* The ESC background image */}
+          <div className="absolute inset-0">
+            <Image
+              src="/images/services.png"
+              alt="ESC Services"
+              fill
+              priority
+              sizes="100vw"
+              className="object-cover object-right lg:object-center opacity-85"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-black via-black/70 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-transparent to-black" />
+          </div>
+
+          {/* Ambient background glows */}
+          <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-[600px] h-[600px] bg-[#962228]/15 rounded-full blur-[150px] pointer-events-none" />
+
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
+            <div className="max-w-2xl text-left">
+              <AnimateOnScroll direction="up">
+                <div className="flex items-center justify-start gap-2 mb-8">
+                  <div className="w-8 h-[2px]" style={{ backgroundColor: '#962228' }} />
+                  <span className="text-sm font-semibold tracking-[0.2em] uppercase text-gray-400">
+                    What We Offer
+                  </span>
+                </div>
+                <h1 className="text-6xl sm:text-7xl lg:text-8xl font-light text-white mb-8 tracking-tight">
+                  Our{' '}
+                  <span className="font-bold" style={{ color: '#e0575f' }}>
+                    Services
+                  </span>
+                </h1>
+                <p className="text-gray-400 text-xl sm:text-2xl leading-relaxed font-light mb-12">
+                  Specialized technology services built exclusively for the Energy
+                  and Water industry — delivered with Indo-German precision.
+                </p>
+                
+                {/* Scroll down indicator */}
+                <motion.div
+                  animate={{ y: [0, 8, 0] }}
+                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                  className="flex flex-col items-start justify-start text-gray-500 mt-16"
+                >
+                  <span className="text-xs uppercase tracking-widest mb-3">Begin Journey</span>
+                  <div className="w-[1px] h-12 bg-gradient-to-b from-[#e0575f] to-transparent" />
+                </motion.div>
+              </AnimateOnScroll>
+            </div>
+          </div>
+        </section>
+
+        {/* The 1000vh timeline container for 5 services */}
+        <div ref={containerRef} className="relative w-full h-[1000vh] bg-black">
+          {/* The sticky viewport screen */}
+          <div className="sticky top-0 w-full h-screen overflow-hidden flex items-center justify-center bg-black">
+            
+            {/* Render all sequences on top of each other; opacity is controlled by scroll */}
+            {services.map((service, idx) => (
+              <CinematicServiceSequence 
+                key={service.title} 
+                service={service} 
+                index={idx} 
+                totalServices={services.length}
+                progress={scrollYProgress} 
+              />
+            ))}
+            
+            {/* Cinematic Progress Bar */}
+            <div className="absolute bottom-0 left-0 w-full h-1 bg-white/10 z-30">
+              <motion.div 
+                className="h-full bg-gradient-to-r from-[#962228] to-[#e0575f]" 
+                style={{ width: useTransform(scrollYProgress, [0, 1], ["0%", "100%"]) }} 
+              />
+            </div>
+          </div>
+        </div>
+
+        <CTAStrip />
+      </div>
+    </PageTransition>
   )
 }
