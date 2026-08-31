@@ -8,8 +8,9 @@ export default function HomePage() {
   return (
     <>
       <HeroSection />
-      <ServicesPreview />
       <PartnershipStrip />
+      <ServicesPreview />
+      <PartnershipStrip variant="thin" />
       <AboutTeaser />
       <CTAStrip />
     </>

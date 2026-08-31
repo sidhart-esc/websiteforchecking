@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Building2, Handshake, Trophy, Calendar, ArrowRight, UserCircle2 } from 'lucide-react'
@@ -8,50 +9,73 @@ import PageTransition from '@/components/ui/PageTransition'
 import AnimateOnScroll from '@/components/ui/AnimateOnScroll'
 import StaggerContainer, { StaggerItem } from '@/components/ui/StaggerContainer'
 
-const news = [
+interface NewsItem {
+  id: string
+  title: string
+  slug: string
+  category: string
+  date: string
+  readTime: string
+  excerpt: string
+  content: string
+  imageUrl?: string | null
+}
+
+const defaultNews: NewsItem[] = [
   {
+    id: '1',
     slug: 'esc-expands-munich-office',
-    category: 'Company News',
-    date: 'August 1, 2026',
-    title: 'ESC Utility Services Expands Munich Office to Support Growing European Demand',
-    excerpt: 'ESC Utility Services announces the expansion of its Munich headquarters to accommodate a growing team serving Energy and Water clients across the DACH region.',
+    category: 'Company Growth',
+    date: 'August 14, 2026',
+    readTime: '3 min read',
+    title: 'ESC Expands Munich Operations with New Innovation Lab',
+    excerpt: 'To support growing European utility partnerships, ESC opens a state-of-the-art innovation lab in Munich focused on Generative AI grid control.',
+    content: `ESC Utility Services is proud to announce the expansion of its European operations with a new state-of-the-art Innovation Lab in Munich, Germany.\n\nThis new facility strengthens our Indo-German technology hub, bringing together specialized software engineers, AI architects, and utility domain experts to build next-generation grid intelligence and IT back-office automation platforms for leading energy and water providers across Europe.\n\n"Expanding our footprint in Munich allows us to collaborate even more closely with European utility leaders while scaling our R&D capabilities across AI, GIS integration, and automated back-office workflows," stated the Board of Directors.`,
+    imageUrl: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800&q=80',
   },
   {
-    slug: 'partnership-siemens-energy',
-    category: 'Partnership',
-    date: 'July 20, 2026',
-    title: 'ESC Announces Strategic Technology Partnership with Leading European Energy Provider',
-    excerpt: 'ESC Utility Services has entered into a strategic technology partnership to deliver AI-powered automation solutions across European energy infrastructure.',
-  },
-  {
-    slug: 'award-best-utility-tech',
-    category: 'Award',
-    date: 'July 5, 2026',
-    title: 'ESC Utility Services Named Top Utility Technology Partner 2026',
-    excerpt: 'We are proud to be recognized as one of the top technology partners for the Energy and Water sector at the European Utility Innovation Awards 2026.',
-  },
-  {
-    slug: 'new-ai-practice',
-    category: 'Company News',
-    date: 'June 18, 2026',
-    title: 'ESC Launches Dedicated Generative AI Practice for Utility Sector',
-    excerpt: 'ESC Utility Services has formally launched a dedicated Generative AI practice, bringing together AI engineers and energy domain experts under one roof.',
+    id: '2',
+    slug: 'green-energy-award-2026',
+    category: 'Awards',
+    date: 'July 02, 2026',
+    readTime: '4 min read',
+    title: 'ESC Named Top Tech Partner at European Energy Summit',
+    excerpt: 'Recognized for outstanding delivery in legacy system modernization and intelligent water utility platform engineering.',
+    content: `ESC Utility Services has been awarded Top Technology Partner of the Year at the 2026 European Energy & Utility Summit held in Frankfurt.\n\nThe distinction recognizes ESC's decade-long commitment to engineering excellence, security-by-design, and continuous digital transformation for energy and water utilities across Germany, Austria, and Switzerland.\n\n"This award highlights the dedication of our dual-continent team in Trivandrum and Düsseldorf. By combining German process standards with agile engineering, we deliver measurable operational efficiency to our utility partners," said the ESC leadership team.`,
+    imageUrl: 'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=800&q=80',
   },
 ]
 
-// Per-category icon + color so each strip reads at a glance, not just a wall of text
 const categoryMeta: Record<string, { icon: typeof Building2; color: string }> = {
+  'Company Growth': { icon: Building2, color: '#962228' },
   'Company News': { icon: Building2, color: '#962228' },
   Partnership: { icon: Handshake, color: '#475569' },
+  Awards: { icon: Trophy, color: '#b45309' },
   Award: { icon: Trophy, color: '#b45309' },
 }
 
 export default function NewsPage() {
+  const [newsList, setNewsList] = useState<NewsItem[]>(defaultNews)
+
+  useEffect(() => {
+    async function loadNews() {
+      try {
+        const res = await fetch('/api/public/data')
+        const data = await res.json()
+        if (data.news && Array.isArray(data.news) && data.news.length > 0) {
+          setNewsList(data.news)
+        }
+      } catch (err) {
+        console.error('Error fetching public news:', err)
+      }
+    }
+    loadNews()
+  }, [])
+
   return (
     <PageTransition>
-      {/* Hero — ESC newsroom doorway */}
+      {/* Hero */}
       <section className="relative bg-black pt-32 pb-20 overflow-hidden">
-        {/* Background image — the ESC key opening onto a newsroom desk */}
         <div className="absolute inset-0">
           <Image
             src="/images/news.png"
@@ -62,11 +86,8 @@ export default function NewsPage() {
             className="object-contain"
             style={{ objectPosition: 'right center' }}
           />
-          {/* Dark gradient so the text reads clearly, thinning out to let the scene show through on the right */}
           <div className="absolute inset-0 bg-gradient-to-r from-black via-black/85 to-black/10" />
-          {/* Top/bottom vignette for cinematic depth */}
           <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/60" />
-          {/* Faint red wash echoing the ESC key's glow */}
           <div
             className="absolute inset-0 mix-blend-overlay opacity-40"
             style={{ background: 'radial-gradient(ellipse 55% 65% at 78% 50%, rgba(150,34,40,0.5) 0%, transparent 70%)' }}
@@ -88,49 +109,56 @@ export default function NewsPage() {
               </span>
             </h1>
             <p className="text-gray-400 text-lg max-w-2xl leading-relaxed">
-              The latest news, partnerships, and announcements from ESC Utility Services.
+              The latest news, press releases, and corporate announcements from ESC Utility Services.
             </p>
           </AnimateOnScroll>
         </div>
       </section>
 
-      {/* News grid */}
-      <section className="bg-white py-24">
+      {/* News Grid */}
+      <section className="bg-slate-50 py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {news.map((item, index) => {
+            {newsList.map((item, index) => {
               const meta = categoryMeta[item.category] ?? { icon: Building2, color: '#962228' }
               const Icon = meta.icon
 
               return (
-                <StaggerItem key={item.slug}>
+                <StaggerItem key={item.id}>
                   <Link href={`/news/${item.slug}`} className="group block h-full">
-                    <div className="h-full flex flex-col bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
-
-                      {/* Thumbnail — branded gradient + category icon (no stock photo needed) */}
-                      <div
-                        className="relative h-44 flex items-center justify-center overflow-hidden"
-                        style={{ background: `linear-gradient(135deg, ${meta.color} 0%, #1c1d24 100%)` }}
-                      >
-                        {/* Faint diagonal grain for texture */}
+                    <div className="h-full flex flex-col bg-white rounded-2xl border border-slate-200/80 overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                      {/* Thumbnail Image or Gradient */}
+                      {item.imageUrl ? (
+                        <div className="relative h-48 w-full overflow-hidden bg-slate-900">
+                          <Image
+                            src={item.imageUrl}
+                            alt={item.title}
+                            fill
+                            className="object-cover group-hover:scale-105 transition-transform duration-500"
+                          />
+                          {index === 0 && (
+                            <span className="absolute top-3 right-3 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide text-white bg-black/60 backdrop-blur-sm">
+                              <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
+                              Latest
+                            </span>
+                          )}
+                        </div>
+                      ) : (
                         <div
-                          className="absolute inset-0 opacity-[0.08]"
-                          style={{
-                            backgroundImage:
-                              'repeating-linear-gradient(115deg, #fff 0px, #fff 1px, transparent 1px, transparent 10px)',
-                          }}
-                        />
-                        <Icon size={56} className="relative text-white/25 group-hover:text-white/35 group-hover:scale-110 transition-all duration-300" />
+                          className="relative h-44 flex items-center justify-center overflow-hidden"
+                          style={{ background: `linear-gradient(135deg, ${meta.color} 0%, #1c1d24 100%)` }}
+                        >
+                          <Icon size={56} className="relative text-white/25 group-hover:text-white/35 group-hover:scale-110 transition-all duration-300" />
+                          {index === 0 && (
+                            <span className="absolute top-3 right-3 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide text-white bg-black/40 backdrop-blur-sm">
+                              <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
+                              Latest
+                            </span>
+                          )}
+                        </div>
+                      )}
 
-                        {index === 0 && (
-                          <span className="absolute top-3 right-3 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide text-white bg-black/30 backdrop-blur-sm">
-                            <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
-                            Latest
-                          </span>
-                        )}
-                      </div>
-
-                      {/* Date badge + author — overlapping the thumbnail edge */}
+                      {/* Date Badge */}
                       <div className="px-5 -mt-4 relative z-10 flex items-center gap-3">
                         <span
                           className="inline-flex items-center gap-1.5 text-white text-xs font-semibold px-3 py-1.5 rounded-md shadow-md"
@@ -139,27 +167,33 @@ export default function NewsPage() {
                           <Calendar size={12} />
                           {item.date}
                         </span>
-                        <span className="text-xs text-gray-400 flex items-center gap-1">
+                        <span className="text-xs text-gray-500 flex items-center gap-1 font-medium">
                           <UserCircle2 size={14} />
                           By ESC Team
                         </span>
                       </div>
 
-                      {/* Content */}
+                      {/* Content & Excerpt Description */}
                       <div className="flex-1 flex flex-col px-5 pt-4 pb-5">
-                        <h3 className="text-base font-bold text-gray-900 mb-2 leading-snug line-clamp-2 group-hover:text-[#962228] transition-colors">
+                        <h3 className="text-lg font-bold text-slate-900 mb-2.5 leading-snug line-clamp-2 group-hover:text-[#962228] transition-colors font-plus-jakarta">
                           {item.title}
                         </h3>
-                        <p className="text-sm text-gray-500 leading-relaxed line-clamp-2 mb-4">
-                          {item.excerpt}
+                        
+                        {/* News Excerpt / Summary Description */}
+                        <p className="text-sm text-slate-600 leading-relaxed line-clamp-3 mb-4 font-normal">
+                          {item.excerpt || item.content}
                         </p>
-                        <span
-                          className="mt-auto inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wide"
-                          style={{ color: meta.color }}
-                        >
-                          Read More
-                          <ArrowRight size={13} className="group-hover:translate-x-1 transition-transform" />
-                        </span>
+
+                        <div className="mt-auto pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 font-medium">
+                          <span>{item.readTime || '3 min read'}</span>
+                          <span
+                            className="inline-flex items-center gap-1 font-bold uppercase tracking-wide group-hover:translate-x-1 transition-transform"
+                            style={{ color: meta.color }}
+                          >
+                            Read Full Press Release
+                            <ArrowRight size={13} />
+                          </span>
+                        </div>
                       </div>
                     </div>
                   </Link>

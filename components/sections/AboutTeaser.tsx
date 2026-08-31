@@ -99,9 +99,9 @@ export default function AboutTeaser() {
             >
               Trusted by leading{' '}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#962228] via-[#e63946] to-red-700">
-                Energy & Water
+                utility organizations
               </span>{' '}
-              organizations worldwide
+              worldwide
             </motion.h2>
 
             {/* Sub-Description Paragraphs */}

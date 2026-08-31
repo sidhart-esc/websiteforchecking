@@ -2,12 +2,15 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { Menu, X, ChevronDown } from 'lucide-react'
 
 const navLinks = [
+  { label: 'Home', href: '/' },
   { label: 'About', href: '/about' },
   { label: 'Services', href: '/services' },
   { label: 'Careers', href: '/careers' },
+  { label: 'Lab', href: '/lab', isSpecial: true },
   {
     label: 'Insights',
     href: '#',
@@ -23,6 +26,7 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const pathname = usePathname()
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 10)
@@ -39,8 +43,8 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
 
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 group">
+          {/* Logo (Non-navigating display) */}
+          <div className="flex items-center gap-2 group cursor-default">
             <div
               className="w-9 h-9 rounded flex items-center justify-center text-white font-bold text-sm tracking-tight"
               style={{ backgroundColor: '#962228' }}
@@ -55,55 +59,78 @@ export default function Navbar() {
                 Indo-German Technology Partner
               </span>
             </div>
-          </Link>
+          </div>
 
           {/* Desktop Nav */}
           <nav className="hidden md:flex items-center gap-1">
-            {navLinks.map((link) =>
-              link.children ? (
-                <div key={link.label} className="relative">
-                  <button
-                    onClick={() => setDropdownOpen(!dropdownOpen)}
-                    className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-gray-700 hover:text-[#962228] transition-colors rounded-md hover:bg-red-50"
-                  >
-                    {link.label}
-                    <ChevronDown
-                      size={14}
-                      className={`transition-transform ${dropdownOpen ? 'rotate-180' : ''}`}
-                    />
-                  </button>
-                  {dropdownOpen && (
-                    <div className="absolute top-full left-0 mt-1 w-40 bg-white rounded-lg shadow-lg border border-gray-100 py-1 z-50">
-                      {link.children.map((child) => (
-                        <Link
-                          key={child.href}
-                          href={child.href}
-                          onClick={() => setDropdownOpen(false)}
-                          className="block px-4 py-2 text-sm text-gray-700 hover:text-[#962228] hover:bg-red-50 transition-colors"
-                        >
-                          {child.label}
-                        </Link>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ) : (
+            {navLinks.map((link) => {
+              if (link.children) {
+                const isParentActive = link.children.some(
+                  (child) => pathname === child.href || (child.href !== '/' && pathname?.startsWith(child.href))
+                )
+                return (
+                  <div key={link.label} className="relative">
+                    <button
+                      onClick={() => setDropdownOpen(!dropdownOpen)}
+                      className={`flex items-center gap-1 px-3 py-2 text-sm transition-colors rounded-md ${
+                        isParentActive
+                          ? 'font-bold text-[#962228] bg-red-50/90 border-b-2 border-[#962228]'
+                          : 'font-medium text-gray-700 hover:text-[#962228] hover:bg-red-50'
+                      }`}
+                    >
+                      {link.label}
+                      <ChevronDown
+                        size={14}
+                        className={`transition-transform ${dropdownOpen ? 'rotate-180' : ''}`}
+                      />
+                    </button>
+                    {dropdownOpen && (
+                      <div className="absolute top-full left-0 mt-1 w-40 bg-white rounded-lg shadow-lg border border-gray-100 py-1 z-50">
+                        {link.children.map((child) => {
+                          const isChildActive = pathname === child.href
+                          return (
+                            <Link
+                              key={child.href}
+                              href={child.href}
+                              onClick={() => setDropdownOpen(false)}
+                              className={`block px-4 py-2 text-sm transition-colors ${
+                                isChildActive
+                                  ? 'font-bold text-[#962228] bg-red-50 border-l-4 border-[#962228]'
+                                  : 'text-gray-700 hover:text-[#962228] hover:bg-red-50'
+                              }`}
+                            >
+                              {child.label}
+                            </Link>
+                          )
+                        })}
+                      </div>
+                    )}
+                  </div>
+                )
+              }
+
+              const isActive = pathname === link.href || (link.href !== '/' && pathname?.startsWith(link.href))
+
+              return (
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="px-3 py-2 text-sm font-medium text-gray-700 hover:text-[#962228] transition-colors rounded-md hover:bg-red-50"
+                  className={`px-3 py-2 text-sm transition-colors rounded-md flex items-center gap-1.5 relative ${
+                    isActive
+                      ? 'font-bold text-[#962228] bg-red-50/90 border-b-2 border-[#962228] shadow-xs'
+                      : 'font-medium text-gray-700 hover:text-[#962228] hover:bg-red-50'
+                  }`}
                 >
                   {link.label}
+                  {link.isSpecial && (
+                    <span className="relative flex h-2 w-2">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#00d4ff] opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-2 w-2 bg-[#00d4ff] shadow-[0_0_8px_#00d4ff]"></span>
+                    </span>
+                  )}
                 </Link>
               )
-            )}
-            <Link
-              href="/contact"
-              className="ml-3 px-4 py-2 text-sm font-semibold text-white rounded-md transition-all hover:opacity-90 hover:shadow-md"
-              style={{ backgroundColor: '#962228' }}
-            >
-              Get in Touch
-            </Link>
+            })}
           </nav>
 
           {/* Mobile Menu Toggle */}
@@ -121,44 +148,57 @@ export default function Navbar() {
       {menuOpen && (
         <div className="md:hidden bg-white border-t border-gray-100 shadow-lg">
           <div className="px-4 py-3 space-y-1">
-            {navLinks.map((link) =>
-              link.children ? (
-                <div key={link.label}>
-                  <p className="px-3 py-2 text-xs font-semibold text-gray-400 uppercase tracking-widest">
-                    {link.label}
-                  </p>
-                  {link.children.map((child) => (
-                    <Link
-                      key={child.href}
-                      href={child.href}
-                      onClick={() => setMenuOpen(false)}
-                      className="block px-6 py-2 text-sm text-gray-700 hover:text-[#962228] hover:bg-red-50 rounded-md transition-colors"
-                    >
-                      {child.label}
-                    </Link>
-                  ))}
-                </div>
-              ) : (
+            {navLinks.map((link) => {
+              if (link.children) {
+                return (
+                  <div key={link.label}>
+                    <p className="px-3 py-2 text-xs font-semibold text-gray-400 uppercase tracking-widest">
+                      {link.label}
+                    </p>
+                    {link.children.map((child) => {
+                      const isChildActive = pathname === child.href
+                      return (
+                        <Link
+                          key={child.href}
+                          href={child.href}
+                          onClick={() => setMenuOpen(false)}
+                          className={`block px-6 py-2 text-sm rounded-md transition-colors ${
+                            isChildActive
+                              ? 'font-bold text-[#962228] bg-red-50 border-l-4 border-[#962228]'
+                              : 'text-gray-700 hover:text-[#962228] hover:bg-red-50'
+                          }`}
+                        >
+                          {child.label}
+                        </Link>
+                      )
+                    })}
+                  </div>
+                )
+              }
+
+              const isActive = pathname === link.href || (link.href !== '/' && pathname?.startsWith(link.href))
+
+              return (
                 <Link
                   key={link.href}
                   href={link.href}
                   onClick={() => setMenuOpen(false)}
-                  className="block px-3 py-2 text-sm font-medium text-gray-700 hover:text-[#962228] hover:bg-red-50 rounded-md transition-colors"
+                  className={`flex items-center justify-between px-3 py-2 text-sm rounded-md transition-colors ${
+                    isActive
+                      ? 'font-bold text-[#962228] bg-red-50 border-l-4 border-[#962228]'
+                      : 'font-medium text-gray-700 hover:text-[#962228] hover:bg-red-50'
+                  }`}
                 >
-                  {link.label}
+                  <span>{link.label}</span>
+                  {link.isSpecial && (
+                    <span className="relative flex h-2.5 w-2.5">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#00d4ff] opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#00d4ff] shadow-[0_0_8px_#00d4ff]"></span>
+                    </span>
+                  )}
                 </Link>
               )
-            )}
-            <div className="pt-2 pb-1">
-              <Link
-                href="/contact"
-                onClick={() => setMenuOpen(false)}
-                className="block text-center px-4 py-2 text-sm font-semibold text-white rounded-md transition-all hover:opacity-90"
-                style={{ backgroundColor: '#962228' }}
-              >
-                Get in Touch
-              </Link>
-            </div>
+            })}
           </div>
         </div>
       )}

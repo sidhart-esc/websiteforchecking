@@ -3,6 +3,7 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import Image from 'next/image'
 import { useRef, useState, useEffect } from 'react'
+import { ArrowLeft, ArrowRight } from 'lucide-react'
 import CTAStrip from '@/components/sections/CTAStrip'
 import PageTransition from '@/components/ui/PageTransition'
 import AnimateOnScroll from '@/components/ui/AnimateOnScroll'
@@ -51,51 +52,45 @@ type TeamMember = {
   initials: string
   name: string
   role: string
-  type: 'founder' | 'executive'
-  location: string
   photo: string
   bio: string
 }
 
-// photo is a placeholder (employee1.png) on every card for now — swap in real
-// headshots per person once available. bio text is placeholder copy too —
-// replace with real bios when ready.
 const team: TeamMember[] = [
   {
-    initials: 'RK',
-    name: 'Rajesh Kumar',
-    role: 'CEO & Co-Founder',
-    type: 'founder',
-    location: '🇮🇳 India',
-    photo: '/images/employee1.png',
-    bio: 'Placeholder bio — add a couple of sentences on background, focus, and what they lead at ESC.',
+    initials: 'ND',
+    name: 'Nagaraj Deivanayagam',
+    role: 'Associate Manager & Team Lead',
+    photo: '/images/em1.png',
+    bio: 'Leading strategic technology initiatives, managing operational team workflows, and driving high-quality software engineering execution.',
   },
   {
-    initials: 'MH',
-    name: 'Markus Hoffmann',
-    role: 'CTO & Co-Founder',
-    type: 'founder',
-    location: '🇩🇪 Germany',
-    photo: '/images/employee1.png',
-    bio: 'Placeholder bio — add a couple of sentences on background, focus, and what they lead at ESC.',
+    initials: 'PB',
+    name: 'Pooja Babu',
+    role: 'Assistant Manager & Team Lead',
+    photo: '/images/em2.png',
+    bio: 'Coordinating cross-functional engineering teams, facilitating technical delivery, and ensuring project milestones meet international quality standards.',
   },
   {
-    initials: 'PS',
-    name: 'Priya Sharma',
-    role: 'Head of AI & Automation',
-    type: 'executive',
-    location: '🇮🇳 India',
-    photo: '/images/employee1.png',
-    bio: 'Placeholder bio — add a couple of sentences on background, focus, and what they lead at ESC.',
+    initials: 'PA',
+    name: 'Parvathy Ajitha',
+    role: 'Team Lead',
+    photo: '/images/em3.png',
+    bio: 'Guiding core software engineering teams, overseeing daily technical operations, and driving project quality across client engagements.',
   },
   {
-    initials: 'TW',
-    name: 'Thomas Weber',
-    role: 'Head of Delivery',
-    type: 'executive',
-    location: '🇩🇪 Germany',
-    photo: '/images/employee1.png',
-    bio: 'Placeholder bio — add a couple of sentences on background, focus, and what they lead at ESC.',
+    initials: 'RS',
+    name: 'Reshma Suresh',
+    role: 'Assistant Manager - Operations and HRM',
+    photo: '/images/em4.png',
+    bio: 'Managing human resource management, operational strategy, organizational growth, and talent development across ESC.',
+  },
+  {
+    initials: 'SA',
+    name: 'Soumya Arayilvalapil',
+    role: 'Team Lead',
+    photo: '/images/em5.png',
+    bio: 'Leading technical delivery units, orchestrating software development workflows, and maintaining rigorous QA standards.',
   },
 ]
 
@@ -170,23 +165,42 @@ const CoreValuesSection = ({ values }: { values: Value[] }) => {
   const numCards = values.length
 
   return (
-    <section ref={wrapperRef} className="relative w-full bg-[#0d0e12]" style={{ height: '200vh' }}>
+    <section ref={wrapperRef} className="relative w-full bg-gradient-to-b from-[#e2e8f0] via-[#f1f5f9] to-[#cbd5e1] border-y border-slate-300/80 shadow-inner" style={{ height: '200vh' }}>
       <div className="sticky top-0 h-screen w-full flex flex-col overflow-hidden">
-        {/* Crisp radial light in the center */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#962228]/15 rounded-full blur-[120px] pointer-events-none" />
+        {/* Background Metallic Light Reflections & Silver Mesh */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          {/* Top Metallic Light Beam */}
+          <div
+            className="absolute -top-32 left-1/2 -translate-x-1/2 w-[900px] h-[400px] rounded-full opacity-50 blur-[130px]"
+            style={{
+              background: 'radial-gradient(circle, rgba(255,255,255,0.95) 0%, rgba(226,232,240,0.7) 60%, transparent 100%)',
+            }}
+          />
+
+          {/* Central Soft Crimson Glow */}
+          <div
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full opacity-15 blur-[150px]"
+            style={{
+              background: 'radial-gradient(circle, rgba(150,34,40,0.6) 0%, transparent 70%)',
+            }}
+          />
+
+          {/* Silver Metallic Grid Overlay */}
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,#00000008_1px,transparent_1px),linear-gradient(to_bottom,#00000008_1px,transparent_1px)] bg-[size:3.5rem_3.5rem] [mask-image:radial-gradient(ellipse_75%_65%_at_50%_45%,#000_70%,transparent_100%)]" />
+        </div>
 
         {/* Section Header */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 pt-24 lg:pt-32 w-full">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 pt-20 lg:pt-28 w-full">
           <AnimateOnScroll direction="up" className="mb-4">
-            <div className="flex items-center gap-2 mb-6">
-              <div className="w-8 h-[2px]" style={{ backgroundColor: '#962228' }} />
-              <span className="text-xs font-semibold tracking-[0.2em] uppercase text-gray-400">
+            <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/80 border border-slate-300 shadow-sm mb-4 backdrop-blur-md">
+              <span className="w-2 h-2 rounded-full bg-[#962228] animate-pulse" />
+              <span className="text-xs font-bold tracking-[0.2em] uppercase text-[#962228] font-outfit">
                 What Drives Us
               </span>
             </div>
-            <h2 className="text-5xl sm:text-6xl font-light text-white">
+            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 leading-[1.15] tracking-tight font-plus-jakarta">
               Our{' '}
-              <span className="font-bold" style={{ color: '#e0575f' }}>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#962228] via-[#e63946] to-red-700">
                 Core Values
               </span>
             </h2>
@@ -225,7 +239,7 @@ const CoreValuesSection = ({ values }: { values: Value[] }) => {
               const isFront = depthRatio > 0.72
 
               const scale = 0.75 + depthRatio * 0.45
-              const opacity = 0.35 + depthRatio * 0.65
+              const opacity = 0.55 + depthRatio * 0.45
               const zIndex = Math.round((z + ry) * 10)
 
               return (
@@ -239,46 +253,47 @@ const CoreValuesSection = ({ values }: { values: Value[] }) => {
                     transformStyle: 'preserve-3d',
                   }}
                 >
-                  {/* Card — crisp dark theme with distinct glowing edges */}
+                  {/* Silver Glassmorphic Card */}
                   <div
-                    className={`relative w-full rounded-3xl p-8 sm:p-10 transition-all duration-300 overflow-hidden backdrop-blur-md ${
+                    className={`relative w-full rounded-3xl p-7 sm:p-9 transition-all duration-300 overflow-hidden backdrop-blur-2xl ${
                       isFront
-                        ? 'bg-[#16171d]/90 border border-[#e0575f]/40 shadow-[0_0_40px_rgba(224,87,95,0.15),inset_0_0_20px_rgba(224,87,95,0.05)]'
-                        : 'bg-[#1a1c23]/80 border border-white/5 shadow-[0_10px_30px_rgba(0,0,0,0.5)]'
+                        ? 'bg-white border-2 border-[#962228] shadow-[0_20px_50px_rgba(150,34,40,0.22),0_10px_25px_rgba(0,0,0,0.08)]'
+                        : 'bg-white/90 border border-slate-300 shadow-[0_10px_30px_rgba(0,0,0,0.08)] hover:border-slate-400'
                     }`}
                   >
-                    {/* Top accent line */}
-                    <div
-                      className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#e0575f] to-transparent ${
-                        isFront ? 'opacity-100' : 'opacity-0'
-                      } transition-opacity duration-300`}
-                    />
+                    {/* Top Specular White Highlight Line */}
+                    <div className="absolute top-0 left-6 right-6 h-[1px] bg-gradient-to-r from-transparent via-white to-transparent" />
+
+                    {/* Top Crimson Specular Bar for Front Card */}
+                    {isFront && (
+                      <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-[#962228] via-[#e63946] to-[#962228] shadow-[0_0_12px_#e63946]" />
+                    )}
 
                     {/* Content */}
                     <div className="relative z-10">
-                      <div className="flex items-start gap-3 mb-5">
+                      <div className="flex items-start gap-3 mb-4">
                         <div
-                          className={`w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 transition-all duration-300 ${
+                          className={`w-11 h-11 rounded-2xl flex items-center justify-center flex-shrink-0 transition-all duration-300 ${
                             isFront
-                              ? 'bg-[#962228]/20 text-[#e0575f]'
-                              : 'bg-white/5 text-gray-500'
+                              ? 'bg-[#962228] text-white shadow-[0_0_18px_rgba(150,34,40,0.35)]'
+                              : 'bg-[#962228]/10 border border-[#962228]/20 text-[#962228]'
                           }`}
                         >
-                          <span className="text-xl font-bold">●</span>
+                          <span className="text-lg font-bold">●</span>
                         </div>
                       </div>
 
                       <h3
-                        className={`text-2xl font-bold mb-4 transition-colors duration-300 ${
-                          isFront ? 'text-white' : 'text-gray-400'
+                        className={`text-xl sm:text-2xl font-black mb-3 tracking-tight font-plus-jakarta transition-colors duration-300 ${
+                          isFront ? 'text-slate-950' : 'text-slate-900'
                         }`}
                       >
                         {value.title}
                       </h3>
 
                       <p
-                        className={`text-base leading-relaxed transition-colors duration-300 ${
-                          isFront ? 'text-gray-300' : 'text-gray-500'
+                        className={`text-xs sm:text-sm leading-relaxed transition-colors duration-300 ${
+                          isFront ? 'text-slate-900 font-medium' : 'text-slate-800 font-normal'
                         }`}
                       >
                         {value.description}
@@ -295,10 +310,10 @@ const CoreValuesSection = ({ values }: { values: Value[] }) => {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1, duration: 0.6 }}
-            className="absolute bottom-10 left-1/2 transform -translate-x-1/2 text-xs text-gray-400 pointer-events-none flex flex-col items-center gap-2"
+            className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-xs font-semibold text-slate-700 pointer-events-none flex flex-col items-center gap-1 px-4 py-2 rounded-full bg-white/80 border border-slate-300 shadow-sm backdrop-blur-md"
           >
             <motion.span
-              animate={{ y: [0, 6, 0] }}
+              animate={{ y: [0, 5, 0] }}
               transition={{ duration: 1.5, repeat: Infinity }}
             >
               ↓
@@ -315,7 +330,7 @@ const CoreValuesSection = ({ values }: { values: Value[] }) => {
 // touch-drag spin as the Core Values ring, but cards sit in a straight row
 // instead of a 3D ring: the center card is large, sharp and lifted, and its
 // neighbors stay fully visible (not shrunk to a sliver) right beside it.
-// Each scroll tick slides the next card into the center.
+// Leadership team — Modern 3D Coverflow Deck matching reference design.
 const LeadershipWheel = ({ team }: { team: TeamMember[] }) => {
   const stageRef = useRef<HTMLDivElement>(null)
   const [centerIndex, setCenterIndex] = useState(0)
@@ -344,7 +359,7 @@ const LeadershipWheel = ({ team }: { team: TeamMember[] }) => {
     }
   }, [])
 
-  // Non-passive wheel listener — only hijacks scroll (spins the deck) while hovered
+  // Non-passive wheel listener
   useEffect(() => {
     const stage = stageRef.current
     if (!stage) return
@@ -353,7 +368,7 @@ const LeadershipWheel = ({ team }: { team: TeamMember[] }) => {
       if (!isHoveredRef.current) return
       e.preventDefault()
       e.stopPropagation()
-      targetIndexRef.current += e.deltaY * 0.006
+      targetIndexRef.current += e.deltaY * 0.005
     }
 
     stage.addEventListener('wheel', handleWheel, { passive: false })
@@ -369,20 +384,25 @@ const LeadershipWheel = ({ team }: { team: TeamMember[] }) => {
   const handleTouchMove = (e: React.TouchEvent) => {
     if (touchStartX.current === null) return
     const diffX = touchStartX.current - e.touches[0].clientX
-    targetIndexRef.current += diffX * 0.008
+    targetIndexRef.current += diffX * 0.006
     touchStartX.current = e.touches[0].clientX
+  }
+
+  const handlePrev = () => {
+    targetIndexRef.current = Math.round(targetIndexRef.current) - 1
+  }
+
+  const handleNext = () => {
+    targetIndexRef.current = Math.round(targetIndexRef.current) + 1
   }
 
   // The member currently centered — drives the bio panel below the deck
   const wrappedFrontIndex = ((Math.round(centerIndex) % numCards) + numCards) % numCards
   const frontMember = team[wrappedFrontIndex]
 
-  // Subtle per-card duotone wash so four copies of the same placeholder photo
-  // don't read as an obvious repeat — swap out once real headshots land
-  const tints = ['#962228', '#4b5563', '#8a4a2e', '#3f5568']
-
   return (
-    <div className="w-full">
+    <div className="w-full py-6">
+      {/* 3D Coverflow Stage */}
       <div
         ref={stageRef}
         onMouseEnter={() => {
@@ -393,20 +413,13 @@ const LeadershipWheel = ({ team }: { team: TeamMember[] }) => {
         }}
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
-        className="relative w-full h-[520px] sm:h-[580px] flex items-center justify-center overflow-hidden select-none cursor-grab active:cursor-grabbing pb-8"
-        style={{ perspective: '1600px' }}
+        className="relative w-full h-[440px] sm:h-[500px] lg:h-[540px] flex items-center justify-center overflow-hidden select-none cursor-grab active:cursor-grabbing"
+        style={{ perspective: '1400px' }}
       >
-        {/* Ambient red glow — fills the space around the deck instead of leaving it bare */}
+        {/* Soft Ambient Red Radial Spotlight under the active card */}
         <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            background: 'radial-gradient(ellipse 55% 60% at 50% 45%, rgba(150,34,40,0.14) 0%, transparent 70%)',
-          }}
-        />
-        {/* Podium glow pooling under the centered card */}
-        <div
-          className="absolute left-1/2 bottom-16 -translate-x-1/2 w-[420px] h-20 rounded-full blur-3xl pointer-events-none"
-          style={{ background: 'radial-gradient(ellipse, rgba(150,34,40,0.3) 0%, transparent 75%)' }}
+          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[350px] rounded-full blur-[140px] pointer-events-none"
+          style={{ background: 'radial-gradient(circle, rgba(150,34,40,0.18) 0%, transparent 75%)' }}
         />
 
         {team.map((member, index) => {
@@ -417,145 +430,78 @@ const LeadershipWheel = ({ team }: { team: TeamMember[] }) => {
 
           const absDiff = Math.abs(diff)
           const isFront = absDiff < 0.5
-          const isFounder = member.type === 'founder'
 
-          // Flat, horizontal "movie poster" layout — no ring/perspective shrink.
-          // The center card sits large and sharp; neighbors sit fully visible
-          // right beside it, just a little smaller and dimmer.
-          const spacing = 300
+          // Tuned spacing & depth transformation matching reference coverflow
+          const spacing = 240
           const translateX = diff * spacing
-          const lift = isFront ? -24 : 0
+          const lift = isFront ? -15 : 0
 
-          const founderBoost = isFounder ? 1.1 : 1
-          const scale = (isFront ? 1.15 : Math.max(0.82, 1 - absDiff * 0.13)) * founderBoost
-          const opacity = isFront ? 1 : Math.max(0.55, 1 - absDiff * 0.22)
-          const grayscale = isFront ? 0 : Math.min(absDiff * 20, 40)
+          const scale = isFront ? 1.05 : Math.max(0.78, 1 - absDiff * 0.12)
+          const opacity = isFront ? 1 : Math.max(0.65, 1 - absDiff * 0.22)
           const zIndex = isFront ? 100 : 50 - Math.round(absDiff * 10)
-
-          // Wider base card — and the center one grows taller, not just bigger
-          const baseWidth = 280
-          const width = baseWidth * scale
-          const aspectRatio = isFront ? 1.5 : 1.3
-          const height = width * aspectRatio
 
           return (
             <div
               key={member.name}
-              className="absolute transition-transform duration-75 ease-out"
+              onClick={() => {
+                targetIndexRef.current = targetIndexRef.current + diff
+              }}
+              className="absolute w-[260px] sm:w-[310px] lg:w-[350px] h-[360px] sm:h-[420px] lg:h-[460px] transition-transform duration-75 ease-out group"
               style={{
-                width: `${width}px`,
-                height: `${height}px`,
-                transform: `translate3d(${translateX}px, ${lift}px, 0px)`,
+                transform: `translate3d(${translateX}px, ${lift}px, 0px) scale(${scale})`,
                 opacity,
                 zIndex,
               }}
             >
+              {/* Premium 3:4 Aspect Ratio Portrait Card */}
               <div
-                className={`relative w-full h-full rounded-2xl overflow-hidden transition-all duration-300 ${
+                className={`relative w-full h-full rounded-3xl overflow-hidden transition-all duration-500 bg-slate-900 ${
                   isFront
-                    ? 'shadow-[0_30px_60px_rgba(0,0,0,0.35),0_0_25px_rgba(150,34,40,0.25)] ring-2 ring-[#962228]/60'
-                    : 'shadow-[0_15px_35px_rgba(0,0,0,0.2)] ring-1 ring-black/10'
+                    ? 'shadow-[0_25px_60px_rgba(0,0,0,0.3),0_0_35px_rgba(150,34,40,0.25)] border-2 border-[#962228]'
+                    : 'shadow-[0_15px_35px_rgba(0,0,0,0.15)] border border-slate-300/80 hover:border-slate-400'
                 }`}
-                style={{ filter: `grayscale(${grayscale}%) brightness(${isFront ? 1 : 0.85})` }}
               >
+                {/* Full Uncropped Photo */}
                 <Image
                   src={member.photo}
                   alt={member.name}
                   fill
-                  className="object-cover object-top"
-                  sizes="340px"
+                  className="object-cover object-top sm:object-center group-hover:scale-105 transition-transform duration-700"
+                  sizes="350px"
                   priority={isFront}
                 />
 
-                {/* Duotone wash to differentiate the repeated placeholder photo per card */}
-                {!isFront && (
-                  <div
-                    className="absolute inset-0 pointer-events-none"
-                    style={{
-                      backgroundColor: tints[index % tints.length],
-                      opacity: 0.16,
-                      mixBlendMode: 'color',
-                    }}
-                  />
-                )}
-
-                {/* Bottom gradient overlay with name/role */}
-                <div className="absolute inset-x-0 bottom-0 pt-16 pb-4 px-4 bg-gradient-to-t from-black/95 via-black/60 to-transparent">
-                  <h3 className="text-white font-bold text-sm sm:text-base leading-tight">
+                {/* Bottom Gradient Overlay for Text Clarity */}
+                <div className="absolute inset-x-0 bottom-0 pt-24 pb-6 px-6 bg-gradient-to-t from-black/95 via-black/50 to-transparent flex flex-col justify-end text-left">
+                  <span className="text-[11px] font-bold uppercase tracking-widest text-[#e63946] mb-1 font-outfit">
+                    {member.role}
+                  </span>
+                  <h3 className="text-white font-extrabold text-xl sm:text-2xl font-plus-jakarta tracking-tight">
                     {member.name}
                   </h3>
-                  <p
-                    className="text-xs sm:text-sm mt-0.5 truncate"
-                    style={{ color: isFront ? '#e0575f' : '#9ca3af' }}
-                  >
-                    {member.role}
-                  </p>
                 </div>
-
-                {/* Founder badge */}
-                {isFounder && isFront && (
-                  <motion.div
-                    className="absolute top-3 right-3 bg-[#962228] text-white px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide"
-                    animate={{ y: [0, -3, 0] }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                  >
-                    Founder
-                  </motion.div>
-                )}
               </div>
-
-              {/* Reflection under the centered card — polished-floor effect */}
-              {isFront && (
-                <div
-                  className="absolute left-0 right-0 top-full h-1/2 overflow-hidden opacity-25 pointer-events-none"
-                  style={{
-                    transform: 'scaleY(-1)',
-                    maskImage: 'linear-gradient(to bottom, rgba(0,0,0,0.6), transparent)',
-                    WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,0.6), transparent)',
-                  }}
-                >
-                  <Image src={member.photo} alt="" fill className="object-cover blur-[2px]" />
-                </div>
-              )}
             </div>
           )
         })}
-
-        {/* Hint */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1, duration: 0.6 }}
-          className="absolute bottom-2 left-1/2 transform -translate-x-1/2 text-xs text-gray-600 pointer-events-none flex items-center gap-2"
-        >
-          <motion.span
-            animate={{ x: [0, 6, 0] }}
-            transition={{ duration: 1.5, repeat: Infinity }}
-          >
-            ⟲
-          </motion.span>
-          Hover & scroll to spin the team
-        </motion.div>
       </div>
 
-      {/* Bio panel — crossfades to whichever member is centered */}
-      <div className="relative z-10 max-w-xl mx-auto text-center px-4 min-h-[110px] -mt-8 sm:-mt-12">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={frontMember.name}
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -12 }}
-            transition={{ duration: 0.35 }}
-          >
-            <h4 className="text-xl font-bold text-white">{frontMember.name}</h4>
-            <p className="text-sm font-semibold mt-1" style={{ color: '#e0575f' }}>
-              {frontMember.role}
-            </p>
-            <p className="text-sm text-gray-400 mt-3 leading-relaxed">{frontMember.bio}</p>
-            <p className="text-xs text-gray-500 mt-3">{frontMember.location}</p>
-          </motion.div>
-        </AnimatePresence>
+      {/* Navigation Arrow Controls matching reference design */}
+      <div className="flex items-center justify-center gap-4 mt-2">
+        <button
+          onClick={handlePrev}
+          aria-label="Previous Team Member"
+          className="w-12 h-12 rounded-full bg-white/80 border border-slate-300 shadow-md backdrop-blur-md flex items-center justify-center text-slate-800 hover:bg-[#962228] hover:text-white hover:border-[#962228] transition-all duration-300 group cursor-pointer"
+        >
+          <ArrowLeft className="w-5 h-5 group-hover:-translate-x-0.5 transition-transform" />
+        </button>
+        <button
+          onClick={handleNext}
+          aria-label="Next Team Member"
+          className="w-12 h-12 rounded-full bg-white/80 border border-slate-300 shadow-md backdrop-blur-md flex items-center justify-center text-slate-800 hover:bg-[#962228] hover:text-white hover:border-[#962228] transition-all duration-300 group cursor-pointer"
+        >
+          <ArrowRight className="w-5 h-5 group-hover:translate-x-0.5 transition-transform" />
+        </button>
       </div>
     </div>
   )
@@ -589,7 +535,7 @@ export default function AboutPage() {
   return (
     <PageTransition>
       {/* Who We Are - ESC doorway hero */}
-      <section className="relative bg-black py-32 overflow-hidden">
+      <section className="relative bg-black py-32 overflow-hidden min-h-[75vh] flex items-center">
         {/* Background image — the glowing ESC key doorway */}
         <div className="absolute inset-0">
           <Image
@@ -598,15 +544,15 @@ export default function AboutPage() {
             fill
             priority
             sizes="100vw"
-            className="object-cover object-top"
+            className="object-cover object-left lg:object-center"
           />
-          {/* Dark gradients to ensure perfect lighting and readability without obscuring the center */}
-          <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/50 to-transparent" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/60" />
-          {/* Subtle red wash echoing the ESC key's glow */}
+          {/* Dark gradients on the right side to ensure crisp text readability without obscuring the left/center image */}
+          <div className="absolute inset-0 bg-gradient-to-l from-black/90 via-black/60 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/60" />
+          {/* Subtle red wash echoing the ESC key's glow on the right */}
           <div
-            className="absolute inset-0 mix-blend-overlay opacity-50"
-            style={{ background: 'radial-gradient(ellipse 60% 70% at 75% 30%, rgba(150,34,40,0.7) 0%, transparent 80%)' }}
+            className="absolute inset-0 mix-blend-overlay opacity-40"
+            style={{ background: 'radial-gradient(ellipse 60% 70% at 80% 50%, rgba(150,34,40,0.8) 0%, transparent 80%)' }}
           />
         </div>
 
@@ -620,8 +566,8 @@ export default function AboutPage() {
           />
         ))}
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <AnimateOnScroll direction="up" className="max-w-2xl">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full flex justify-end">
+          <AnimateOnScroll direction="left" className="max-w-xl text-left ml-auto">
             <div className="flex items-center gap-2 mb-6">
               <motion.div
                 className="w-8 h-[2px]"
@@ -660,7 +606,7 @@ export default function AboutPage() {
             </motion.h1>
 
             <motion.p
-              className="text-gray-300 text-xl max-w-xl leading-relaxed"
+              className="text-gray-300 text-xl max-w-xl leading-relaxed font-light"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.6 }}

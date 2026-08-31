@@ -1,0 +1,65 @@
+datasource db {
+  provider = "sqlite"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  name      String
+  role      String   @default("MANAGER")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model News {
+  id        String   @id @default(uuid())
+  title     String
+  slug      String   @unique
+  category  String
+  date      String
+  readTime  String   @default("3 min read")
+  excerpt   String
+  content   String
+  imageUrl  String?
+  published Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model JobListing {
+  id           String   @id @default(uuid())
+  title        String
+  slug         String   @unique
+  department   String
+  location     String
+  type         String
+  experience   String?
+  salary       String?
+  description  String
+  requirements String?
+  active       Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model BlogPost {
+  id            String   @id @default(uuid())
+  title         String
+  slug          String   @unique
+  category      String
+  date          String
+  readTime      String   @default("5 min read")
+  excerpt       String
+  content       String
+  authorName    String?
+  authorRole    String?
+  coverImageUrl String?
+  published     Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}

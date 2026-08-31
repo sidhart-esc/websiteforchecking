@@ -107,11 +107,11 @@ export default function Footer() {
             © {new Date().getFullYear()} ESC Utility Services Pvt. Ltd. All rights reserved.
           </p>
           <div className="flex gap-4">
-            <Link href="/privacy" className="text-xs text-gray-500 hover:text-gray-300 transition-colors">
-              Privacy Policy
+            <Link href="/data-protection" className="text-xs text-gray-500 hover:text-gray-300 transition-colors">
+              Data Protection
             </Link>
-            <Link href="/terms" className="text-xs text-gray-500 hover:text-gray-300 transition-colors">
-              Terms of Use
+            <Link href="/imprint" className="text-xs text-gray-500 hover:text-gray-300 transition-colors">
+              Imprint
             </Link>
           </div>
         </div>

@@ -125,27 +125,27 @@ const CinematicServiceSequence = ({ service, index, totalServices, progress }: {
       {/* IMAGE LAYER (Full Screen for maximum projection) */}
       <motion.div
         style={{ opacity: imageOpacity, scale: imageScale }}
-        className="absolute inset-0 z-10 pointer-events-none"
+        className="absolute inset-0 z-10 pointer-events-none pt-16"
       >
         <Image 
           src={service.image} 
           alt={service.title} 
           fill 
-          className="object-cover object-right lg:object-center" 
+          className="object-cover object-top lg:object-[center_top]" 
           priority={index === 0} 
           unoptimized={true}
         />
-        {/* Gradient that creates a dark anchor on the left for text, but leaves the top/right entirely clear */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-transparent w-full lg:w-[70%]" />
+        {/* Dark Gradient Overlay anchored to the left for clean text readability without any box */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black via-black/85 to-transparent w-full lg:w-[65%]" />
       </motion.div>
 
-      {/* TEXT LAYER (Anchored to the Left) */}
+      {/* TEXT LAYER (Anchored to Left, cleanly without any card box container) */}
       <motion.div
         style={{ opacity: textOpacity, y: textY }}
         className="absolute inset-y-0 left-0 w-full lg:w-[50%] flex items-center justify-center p-8 sm:p-12 lg:p-20 z-20 pointer-events-none"
       >
-        <div className="w-full text-left">
-          <h2 className="text-5xl sm:text-6xl lg:text-7xl font-light text-white mb-8 tracking-tight leading-tight">
+        <div className="w-full text-left pointer-events-auto">
+          <h2 className="text-5xl sm:text-6xl lg:text-7xl font-light text-white mb-8 tracking-tight leading-tight font-plus-jakarta">
             {service.title.split(' ').map((word: string, i: number, arr: string[]) => (
               <span key={i} className={i === arr.length - 1 ? 'font-bold' : ''} style={{ color: i === arr.length - 1 ? '#e0575f' : 'white' }}>
                 {word}{' '}
@@ -185,41 +185,41 @@ export default function ServicesPage() {
   return (
     <PageTransition>
       <div className="bg-black">
-        {/* Cinematic Header */}
-        <section className="relative pt-40 pb-32 overflow-hidden min-h-[60vh] flex items-center justify-start text-left">
+        {/* Original Dark Hero Section */}
+        <section className="relative pt-40 pb-32 overflow-hidden min-h-[60vh] flex items-center justify-start text-left bg-black">
           {/* The ESC background image */}
-          <div className="absolute inset-0">
+          <div className="absolute inset-0 pt-16">
             <Image
-              src="/images/services.png"
+              src="/images/services1.png"
               alt="ESC Services"
               fill
               priority
               sizes="100vw"
-              className="object-cover object-right lg:object-center opacity-85"
+              className="object-cover object-top lg:object-[center_top] opacity-85"
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-black via-black/70 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-l from-black via-black/80 to-transparent" />
             <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-transparent to-black" />
           </div>
 
           {/* Ambient background glows */}
-          <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-[600px] h-[600px] bg-[#962228]/15 rounded-full blur-[150px] pointer-events-none" />
+          <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-[600px] h-[600px] bg-[#962228]/15 rounded-full blur-[150px] pointer-events-none" />
 
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
-            <div className="max-w-2xl text-left">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full flex justify-end">
+            <div className="max-w-2xl text-right">
               <AnimateOnScroll direction="up">
-                <div className="flex items-center justify-start gap-2 mb-8">
-                  <div className="w-8 h-[2px]" style={{ backgroundColor: '#962228' }} />
-                  <span className="text-sm font-semibold tracking-[0.2em] uppercase text-gray-400">
+                <div className="flex items-center justify-end gap-2 mb-8">
+                  <span className="text-sm font-semibold tracking-[0.2em] uppercase text-gray-400 font-outfit">
                     What We Offer
                   </span>
+                  <div className="w-8 h-[2px]" style={{ backgroundColor: '#962228' }} />
                 </div>
-                <h1 className="text-6xl sm:text-7xl lg:text-8xl font-light text-white mb-8 tracking-tight">
+                <h1 className="text-6xl sm:text-7xl lg:text-8xl font-light text-white mb-8 tracking-tight font-plus-jakarta">
                   Our{' '}
-                  <span className="font-bold" style={{ color: '#e0575f' }}>
+                  <span className="font-extrabold" style={{ color: '#e0575f' }}>
                     Services
                   </span>
                 </h1>
-                <p className="text-gray-400 text-xl sm:text-2xl leading-relaxed font-light mb-12">
+                <p className="text-gray-300 text-xl sm:text-2xl leading-relaxed font-light mb-12">
                   Specialized technology services built exclusively for the Energy
                   and Water industry — delivered with Indo-German precision.
                 </p>
@@ -228,17 +228,17 @@ export default function ServicesPage() {
                 <motion.div
                   animate={{ y: [0, 8, 0] }}
                   transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                  className="flex flex-col items-start justify-start text-gray-500 mt-16"
+                  className="flex flex-col items-end justify-end text-gray-400 mt-16"
                 >
-                  <span className="text-xs uppercase tracking-widest mb-3">Begin Journey</span>
-                  <div className="w-[1px] h-12 bg-gradient-to-b from-[#e0575f] to-transparent" />
+                  <span className="text-xs uppercase tracking-widest mb-3 font-outfit font-bold">Scroll To Explore</span>
+                  <div className="w-[2px] h-12 bg-gradient-to-b from-[#e0575f] to-transparent" />
                 </motion.div>
               </AnimateOnScroll>
             </div>
           </div>
         </section>
 
-        {/* The 1000vh timeline container for 5 services */}
+        {/* The 1000vh timeline container in black */}
         <div ref={containerRef} className="relative w-full h-[1000vh] bg-black">
           {/* The sticky viewport screen */}
           <div className="sticky top-0 w-full h-screen overflow-hidden flex items-center justify-center bg-black">

@@ -127,4 +127,8 @@
   html {
     @apply font-sans;
   }
+  /* Hide Spline branding badge */
+  a[href*="spline.design"] {
+    display: none !important;
+  }
 }
