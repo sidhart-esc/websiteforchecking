@@ -1,8 +1,15 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
-import { getCurrentUser } from '@/lib/auth'
+import { requireUser, requireRole, isAuthResult } from '@/lib/auth'
 
 export async function GET() {
+  // Previously had no auth check at all — anyone could fetch every blog
+  // post, including unpublished drafts, without logging in.
+  const auth = await requireUser()
+  if (isAuthResult(auth)) {
+    return NextResponse.json({ error: auth.error }, { status: auth.status })
+  }
+
   try {
     const posts = await prisma.blogPost.findMany({
       orderBy: { createdAt: 'desc' },
@@ -15,10 +22,13 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  const user = await getCurrentUser()
-  if (!user) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  // Blog content is ADMIN-only — previously any authenticated user
+  // (including the HR account) could create posts.
+  const auth = await requireRole(['ADMIN'])
+  if (isAuthResult(auth)) {
+    return NextResponse.json({ error: auth.error }, { status: auth.status })
   }
+  const user = auth
 
   try {
     const body = await request.json()
@@ -57,9 +67,9 @@ export async function POST(request: Request) {
 }
 
 export async function PUT(request: Request) {
-  const user = await getCurrentUser()
-  if (!user) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  const auth = await requireRole(['ADMIN'])
+  if (isAuthResult(auth)) {
+    return NextResponse.json({ error: auth.error }, { status: auth.status })
   }
 
   try {
@@ -94,9 +104,9 @@ export async function PUT(request: Request) {
 }
 
 export async function DELETE(request: Request) {
-  const user = await getCurrentUser()
-  if (!user) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  const auth = await requireRole(['ADMIN'])
+  if (isAuthResult(auth)) {
+    return NextResponse.json({ error: auth.error }, { status: auth.status })
   }
 
   try {

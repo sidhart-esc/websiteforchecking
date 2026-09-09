@@ -39,3 +39,12 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# database — contains password hashes and all CMS content, never commit this
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+
+# user-uploaded files from the CMS — runtime data, not source
+/public/uploads

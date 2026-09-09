@@ -4,16 +4,28 @@ import bcrypt from 'bcryptjs'
 async function main() {
   console.log('Seeding database...')
 
-  // Read initial seed passwords from environment variables or fallback securely
-  const rawAdminPassword = process.env.INITIAL_ADMIN_PASSWORD || 'admin123'
-  const rawHrPassword = process.env.INITIAL_HR_PASSWORD || 'hr123'
+  // Require real seed passwords — no guessable fallback. Set these in
+  // .env.local before running `prisma db seed` (or first `npm run dev`,
+  // which triggers it on an empty database).
+  const rawAdminPassword = process.env.INITIAL_ADMIN_PASSWORD
+  const rawHrPassword = process.env.INITIAL_HR_PASSWORD
+
+  if (!rawAdminPassword || !rawHrPassword) {
+    throw new Error(
+      'INITIAL_ADMIN_PASSWORD and INITIAL_HR_PASSWORD must be set in .env.local before seeding. ' +
+      'Refusing to seed with a guessable default password.'
+    )
+  }
 
   const hashedPassword = await bcrypt.hash(rawAdminPassword, 10)
   const hrPassword = await bcrypt.hash(rawHrPassword, 10)
 
+  // `update` is intentionally non-empty: re-running the seed (e.g. after
+  // rotating INITIAL_ADMIN_PASSWORD/INITIAL_HR_PASSWORD in .env.local) must
+  // actually update the stored password hash, not silently no-op.
   await prisma.user.upsert({
     where: { email: 'admin@esc.com' },
-    update: {},
+    update: { password: hashedPassword },
     create: {
       email: 'admin@esc.com',
       password: hashedPassword,
@@ -24,7 +36,7 @@ async function main() {
 
   await prisma.user.upsert({
     where: { email: 'hr@esc.com' },
-    update: {},
+    update: { password: hrPassword },
     create: {
       email: 'hr@esc.com',
       password: hrPassword,

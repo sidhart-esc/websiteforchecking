@@ -16,8 +16,14 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Current password and new password are required' }, { status: 400 })
     }
 
-    if (newPassword.length < 6) {
-      return NextResponse.json({ error: 'New password must be at least 6 characters long' }, { status: 400 })
+    // 6 characters was far too weak for admin/HR CMS accounts (this is how
+    // the seeded accounts ended up with 8- and 5-character passwords).
+    if (newPassword.length < 10) {
+      return NextResponse.json({ error: 'New password must be at least 10 characters long' }, { status: 400 })
+    }
+
+    if (newPassword === currentPassword) {
+      return NextResponse.json({ error: 'New password must be different from the current password' }, { status: 400 })
     }
 
     // Fetch user from DB

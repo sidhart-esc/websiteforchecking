@@ -1,8 +1,15 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
-import { getCurrentUser } from '@/lib/auth'
+import { requireUser, requireRole, isAuthResult } from '@/lib/auth'
 
 export async function GET() {
+  // Previously had no auth check at all — anyone could fetch every job
+  // listing, including inactive ones, without logging in.
+  const auth = await requireUser()
+  if (isAuthResult(auth)) {
+    return NextResponse.json({ error: auth.error }, { status: auth.status })
+  }
+
   try {
     const jobs = await prisma.jobListing.findMany({
       orderBy: { createdAt: 'desc' },
@@ -15,9 +22,11 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  const user = await getCurrentUser()
-  if (!user) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  // Jobs can be managed by ADMIN or HR (matches the seeded "Talent
+  // Acquisition Partner" HR account's actual job).
+  const auth = await requireRole(['ADMIN', 'HR'])
+  if (isAuthResult(auth)) {
+    return NextResponse.json({ error: auth.error }, { status: auth.status })
   }
 
   try {
@@ -56,9 +65,9 @@ export async function POST(request: Request) {
 }
 
 export async function PUT(request: Request) {
-  const user = await getCurrentUser()
-  if (!user) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  const auth = await requireRole(['ADMIN', 'HR'])
+  if (isAuthResult(auth)) {
+    return NextResponse.json({ error: auth.error }, { status: auth.status })
   }
 
   try {
@@ -92,9 +101,9 @@ export async function PUT(request: Request) {
 }
 
 export async function DELETE(request: Request) {
-  const user = await getCurrentUser()
-  if (!user) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  const auth = await requireRole(['ADMIN', 'HR'])
+  if (isAuthResult(auth)) {
+    return NextResponse.json({ error: auth.error }, { status: auth.status })
   }
 
   try {

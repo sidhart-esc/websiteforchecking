@@ -1,8 +1,15 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
-import { getCurrentUser } from '@/lib/auth'
+import { requireUser, requireRole, isAuthResult } from '@/lib/auth'
 
 export async function GET() {
+  // Previously had no auth check at all — anyone could fetch every news
+  // item, including unpublished ones, without logging in.
+  const auth = await requireUser()
+  if (isAuthResult(auth)) {
+    return NextResponse.json({ error: auth.error }, { status: auth.status })
+  }
+
   try {
     const news = await prisma.news.findMany({
       orderBy: { createdAt: 'desc' },
@@ -15,9 +22,11 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  const user = await getCurrentUser()
-  if (!user) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  // News is ADMIN-only — previously any authenticated user (including the
+  // HR account) could create news items.
+  const auth = await requireRole(['ADMIN'])
+  if (isAuthResult(auth)) {
+    return NextResponse.json({ error: auth.error }, { status: auth.status })
   }
 
   try {
@@ -55,9 +64,9 @@ export async function POST(request: Request) {
 }
 
 export async function PUT(request: Request) {
-  const user = await getCurrentUser()
-  if (!user) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  const auth = await requireRole(['ADMIN'])
+  if (isAuthResult(auth)) {
+    return NextResponse.json({ error: auth.error }, { status: auth.status })
   }
 
   try {
@@ -90,9 +99,9 @@ export async function PUT(request: Request) {
 }
 
 export async function DELETE(request: Request) {
-  const user = await getCurrentUser()
-  if (!user) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  const auth = await requireRole(['ADMIN'])
+  if (isAuthResult(auth)) {
+    return NextResponse.json({ error: auth.error }, { status: auth.status })
   }
 
   try {
