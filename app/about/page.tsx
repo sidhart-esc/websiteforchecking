@@ -3,10 +3,87 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import Image from 'next/image'
 import { useRef, useState, useEffect } from 'react'
-import { ArrowLeft, ArrowRight } from 'lucide-react'
+import { ArrowLeft, ArrowRight, Webhook, FileSearch, Boxes, BrainCog, Share2, Database } from 'lucide-react'
+import {
+  SiReact, SiNextdotjs, SiNodedotjs, SiHtml5, SiCss, SiPython, SiFastapi,
+  SiDjango, SiStreamlit, SiSap, SiUipath, SiMysql, SiMongodb, SiPostgresql,
+  SiGithub, SiGitlab, SiDocker, SiNginx,
+} from 'react-icons/si'
+import { TbBrandAzure } from 'react-icons/tb'
+import { BsOpenai } from 'react-icons/bs'
+import { FaThLarge, FaBolt, FaChartBar, FaGlobe } from 'react-icons/fa'
 import CTAStrip from '@/components/sections/CTAStrip'
+import HeroBridge from '@/components/sections/HeroBridge'
 import PageTransition from '@/components/ui/PageTransition'
 import AnimateOnScroll from '@/components/ui/AnimateOnScroll'
+
+// A few entries have no dedicated logo in any icon set available to us
+// (Power Apps/Automate/BI/Pages, SharePoint, REST APIs, RAG, Vector
+// Databases, Machine Learning, SQL) — these use generic icons in a
+// representative brand/theme color as a stand-in until real logos are supplied.
+const techCategories = [
+  {
+    name: 'Frontend',
+    items: [
+      { name: 'React', Icon: SiReact, color: '#61DAFB' },
+      { name: 'Next.js', Icon: SiNextdotjs, color: '#000000' },
+      { name: 'Node.js', Icon: SiNodedotjs, color: '#339933' },
+      { name: 'HTML', Icon: SiHtml5, color: '#E34F26' },
+      { name: 'CSS', Icon: SiCss, color: '#1572B6' },
+    ],
+  },
+  {
+    name: 'Backend & APIs',
+    items: [
+      { name: 'Python', Icon: SiPython, color: '#3776AB' },
+      { name: 'FastAPI', Icon: SiFastapi, color: '#009688' },
+      { name: 'Django', Icon: SiDjango, color: '#092E20' },
+      { name: 'REST APIs', Icon: Webhook, color: '#4F46E5' },
+    ],
+  },
+  {
+    name: 'AI & Data',
+    items: [
+      { name: 'Python', Icon: SiPython, color: '#3776AB' },
+      { name: 'OpenAI', Icon: BsOpenai, color: '#10A37F' },
+      { name: 'RAG', Icon: FileSearch, color: '#7C3AED' },
+      { name: 'Vector Databases', Icon: Boxes, color: '#0EA5E9' },
+      { name: 'Machine Learning', Icon: BrainCog, color: '#DB2777' },
+      { name: 'Streamlit', Icon: SiStreamlit, color: '#FF4B4B' },
+    ],
+  },
+  {
+    name: 'Enterprise & Automation',
+    items: [
+      { name: 'SAP', Icon: SiSap, color: '#0FAAFF' },
+      { name: 'Power Apps', Icon: FaThLarge, color: '#742774' },
+      { name: 'Power Automate', Icon: FaBolt, color: '#0066FF' },
+      { name: 'Power BI', Icon: FaChartBar, color: '#F2C811' },
+      { name: 'Power Pages', Icon: FaGlobe, color: '#1B75BC' },
+      { name: 'SharePoint', Icon: Share2, color: '#038387' },
+      { name: 'UiPath', Icon: SiUipath, color: '#FA4616' },
+    ],
+  },
+  {
+    name: 'Cloud & DevOps',
+    items: [
+      { name: 'Azure', Icon: TbBrandAzure, color: '#0078D4' },
+      { name: 'Docker', Icon: SiDocker, color: '#2496ED' },
+      { name: 'Nginx', Icon: SiNginx, color: '#009639' },
+      { name: 'GitHub', Icon: SiGithub, color: '#181717' },
+      { name: 'GitLab', Icon: SiGitlab, color: '#FC6D26' },
+    ],
+  },
+  {
+    name: 'Databases',
+    items: [
+      { name: 'MySQL', Icon: SiMysql, color: '#4479A1' },
+      { name: 'MongoDB', Icon: SiMongodb, color: '#47A248' },
+      { name: 'PostgreSQL', Icon: SiPostgresql, color: '#4169E1' },
+      { name: 'SQL', Icon: Database, color: '#64748B' },
+    ],
+  },
+]
 
 type Value = {
   title: string
@@ -149,10 +226,10 @@ const CoreValuesSection = ({ values }: { values: Value[] }) => {
       // Scrollable distance is the total height of the wrapper (200vh) minus one viewport (100vh)
       const scrollableDistance = rect.height - window.innerHeight
       if (scrollableDistance <= 0) return
-      
+
       // Calculate exact progress from 0 to 1
       const progress = Math.min(Math.max(-rect.top / scrollableDistance, 0), 1)
-      
+
       // Map progress exactly to one full 360-degree rotation
       targetAngleRef.current = progress * 360
     }
@@ -208,7 +285,7 @@ const CoreValuesSection = ({ values }: { values: Value[] }) => {
         </div>
 
         {/* 3D Wheel Area */}
-        <div 
+        <div
           className="flex-1 w-full flex items-center justify-center relative"
           style={{
             perspective: '1800px',
@@ -255,11 +332,10 @@ const CoreValuesSection = ({ values }: { values: Value[] }) => {
                 >
                   {/* Silver Glassmorphic Card */}
                   <div
-                    className={`relative w-full rounded-3xl p-7 sm:p-9 transition-all duration-300 overflow-hidden backdrop-blur-2xl ${
-                      isFront
-                        ? 'bg-white border-2 border-[#962228] shadow-[0_20px_50px_rgba(150,34,40,0.22),0_10px_25px_rgba(0,0,0,0.08)]'
-                        : 'bg-white/90 border border-slate-300 shadow-[0_10px_30px_rgba(0,0,0,0.08)] hover:border-slate-400'
-                    }`}
+                    className={`relative w-full rounded-3xl p-7 sm:p-9 transition-all duration-300 overflow-hidden backdrop-blur-2xl ${isFront
+                      ? 'bg-white border-2 border-[#962228] shadow-[0_20px_50px_rgba(150,34,40,0.22),0_10px_25px_rgba(0,0,0,0.08)]'
+                      : 'bg-white/90 border border-slate-300 shadow-[0_10px_30px_rgba(0,0,0,0.08)] hover:border-slate-400'
+                      }`}
                   >
                     {/* Top Specular White Highlight Line */}
                     <div className="absolute top-0 left-6 right-6 h-[1px] bg-gradient-to-r from-transparent via-white to-transparent" />
@@ -273,28 +349,25 @@ const CoreValuesSection = ({ values }: { values: Value[] }) => {
                     <div className="relative z-10">
                       <div className="flex items-start gap-3 mb-4">
                         <div
-                          className={`w-11 h-11 rounded-2xl flex items-center justify-center flex-shrink-0 transition-all duration-300 ${
-                            isFront
-                              ? 'bg-[#962228] text-white shadow-[0_0_18px_rgba(150,34,40,0.35)]'
-                              : 'bg-[#962228]/10 border border-[#962228]/20 text-[#962228]'
-                          }`}
+                          className={`w-11 h-11 rounded-2xl flex items-center justify-center flex-shrink-0 transition-all duration-300 ${isFront
+                            ? 'bg-[#962228] text-white shadow-[0_0_18px_rgba(150,34,40,0.35)]'
+                            : 'bg-[#962228]/10 border border-[#962228]/20 text-[#962228]'
+                            }`}
                         >
                           <span className="text-lg font-bold">●</span>
                         </div>
                       </div>
 
                       <h3
-                        className={`text-xl sm:text-2xl font-black mb-3 tracking-tight font-plus-jakarta transition-colors duration-300 ${
-                          isFront ? 'text-slate-950' : 'text-slate-900'
-                        }`}
+                        className={`text-xl sm:text-2xl font-black mb-3 tracking-tight font-plus-jakarta transition-colors duration-300 ${isFront ? 'text-slate-950' : 'text-slate-900'
+                          }`}
                       >
                         {value.title}
                       </h3>
 
                       <p
-                        className={`text-xs sm:text-sm leading-relaxed transition-colors duration-300 ${
-                          isFront ? 'text-slate-900 font-medium' : 'text-slate-800 font-normal'
-                        }`}
+                        className={`text-xs sm:text-sm leading-relaxed transition-colors duration-300 ${isFront ? 'text-slate-900 font-medium' : 'text-slate-800 font-normal'
+                          }`}
                       >
                         {value.description}
                       </p>
@@ -304,7 +377,7 @@ const CoreValuesSection = ({ values }: { values: Value[] }) => {
               )
             })}
           </div>
-          
+
           {/* Scroll hint */}
           <motion.div
             initial={{ opacity: 0, y: 10 }}
@@ -455,11 +528,10 @@ const LeadershipWheel = ({ team }: { team: TeamMember[] }) => {
             >
               {/* Premium 3:4 Aspect Ratio Portrait Card */}
               <div
-                className={`relative w-full h-full rounded-3xl overflow-hidden transition-all duration-500 bg-slate-900 ${
-                  isFront
-                    ? 'shadow-[0_25px_60px_rgba(0,0,0,0.3),0_0_35px_rgba(150,34,40,0.25)] border-2 border-[#962228]'
-                    : 'shadow-[0_15px_35px_rgba(0,0,0,0.15)] border border-slate-300/80 hover:border-slate-400'
-                }`}
+                className={`relative w-full h-full rounded-3xl overflow-hidden transition-all duration-500 bg-slate-900 ${isFront
+                  ? 'shadow-[0_25px_60px_rgba(0,0,0,0.3),0_0_35px_rgba(150,34,40,0.25)] border-2 border-[#962228]'
+                  : 'shadow-[0_15px_35px_rgba(0,0,0,0.15)] border border-slate-300/80 hover:border-slate-400'
+                  }`}
               >
                 {/* Full Uncropped Photo */}
                 <Image
@@ -535,26 +607,23 @@ export default function AboutPage() {
   return (
     <PageTransition>
       {/* Who We Are - ESC doorway hero */}
-      <section className="relative bg-black py-32 overflow-hidden min-h-[75vh] flex items-center">
-        {/* Background image — the glowing ESC key doorway */}
-        <div className="absolute inset-0">
+      <section className="relative pt-40 pb-32 overflow-hidden min-h-[60vh] flex items-center justify-start text-left bg-gradient-to-br from-slate-100 via-slate-200/60 to-slate-100">
+        {/* Background image — ESC keyboard image first, then silver overlay */}
+        <div className="absolute inset-0 z-0">
           <Image
             src="/images/About.png"
-            alt="ESC"
+            alt="ESC About Hero"
             fill
             priority
             sizes="100vw"
-            className="object-cover object-left lg:object-center"
+            className="object-cover object-[center_75%] opacity-95"
           />
-          {/* Dark gradients on the right side to ensure crisp text readability without obscuring the left/center image */}
-          <div className="absolute inset-0 bg-gradient-to-l from-black/90 via-black/60 to-transparent" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/60" />
-          {/* Subtle red wash echoing the ESC key's glow on the right */}
-          <div
-            className="absolute inset-0 mix-blend-overlay opacity-40"
-            style={{ background: 'radial-gradient(ellipse 60% 70% at 80% 50%, rgba(150,34,40,0.8) 0%, transparent 80%)' }}
-          />
+          <div className="absolute inset-0 bg-gradient-to-l from-slate-100/85 via-slate-100/40 to-transparent z-10 pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-b from-slate-100/30 via-transparent to-slate-100/60 z-10 pointer-events-none" />
         </div>
+
+        {/* Ambient background glow */}
+        <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-[600px] h-[600px] bg-[#962228]/10 rounded-full blur-[150px] pointer-events-none" />
 
         {/* Animated sparkles */}
         {SPARKLE_POSITIONS.map((pos, i) => (
@@ -567,56 +636,40 @@ export default function AboutPage() {
         ))}
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full flex justify-end">
-          <AnimateOnScroll direction="left" className="max-w-xl text-left ml-auto">
-            <div className="flex items-center gap-2 mb-6">
+          <div className="max-w-2xl text-right">
+            <AnimateOnScroll direction="up">
+              <div className="flex items-center justify-end gap-2 mb-8">
+                <span className="text-sm font-semibold tracking-[0.2em] uppercase text-slate-600 font-outfit">
+                  Who We Are
+                </span>
+                <div className="w-8 h-[2px]" style={{ backgroundColor: '#962228' }} />
+              </div>
+              <h1 className="text-6xl sm:text-7xl lg:text-8xl font-light text-slate-900 mb-8 tracking-tight font-plus-jakarta">
+                About{' '}
+                <span className="font-extrabold" style={{ color: '#962228' }}>
+                  ESC
+                </span>
+              </h1>
+              <p className="text-slate-950 text-xl sm:text-2xl leading-relaxed font-semibold mb-12 drop-shadow-sm">
+                A specialized Indo-German technology partner delivering mission-critical software, AI diagnostics, and RPA automation to global Energy and Water networks.
+              </p>
+
+              {/* Scroll down indicator */}
               <motion.div
-                className="w-8 h-[2px]"
-                style={{ backgroundColor: '#962228' }}
-                initial={{ scaleX: 0 }}
-                animate={{ scaleX: 1 }}
-                transition={{ duration: 0.8 }}
-              />
-              <motion.span
-                className="text-xs font-semibold tracking-[0.2em] uppercase text-gray-300"
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
+                animate={{ y: [0, 8, 0] }}
+                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                className="flex flex-col items-end justify-end text-slate-500 mt-16"
               >
-                Who We Are
-              </motion.span>
-            </div>
-
-            <motion.h1
-              className="text-4xl sm:text-5xl lg:text-6xl font-light text-white mb-6 leading-tight"
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-            >
-              <motion.span
-                className="block font-bold text-transparent bg-clip-text"
-                style={{
-                  backgroundImage: 'linear-gradient(90deg, #962228 0%, #d42e3a 100%)',
-                }}
-                initial={{ opacity: 0, y: 40 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.4 }}
-              >
-                ESC Utility Services
-              </motion.span>
-            </motion.h1>
-
-            <motion.p
-              className="text-gray-300 text-xl max-w-xl leading-relaxed font-light"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.6 }}
-            >
-              A specialized Indo-German technology partner with over 12 years of
-              experience serving the Energy and Water industry with precision and expertise.
-            </motion.p>
-          </AnimateOnScroll>
+                <span className="text-xs uppercase tracking-widest mb-3 font-outfit font-bold text-slate-600">Scroll To Explore</span>
+                <div className="w-[2px] h-12 bg-gradient-to-b from-[#962228] to-transparent" />
+              </motion.div>
+            </AnimateOnScroll>
+          </div>
         </div>
       </section>
+
+      {/* Indo-German Laser Banner Bridge */}
+      <HeroBridge />
 
       {/* Mission - Silverish Modern */}
       <section className="relative py-32 overflow-hidden">
@@ -676,6 +729,59 @@ export default function AboutPage() {
 
       {/* Core Values - Full Screen Sticky 3D Spinning Wheel */}
       <CoreValuesSection values={values} />
+
+      {/* Tech Stack */}
+      <section className="relative bg-white py-24 sm:py-28 overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <AnimateOnScroll direction="up" className="mb-14 text-center">
+            <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-slate-50 border border-slate-200 shadow-sm mb-4">
+              <span className="w-2 h-2 rounded-full bg-[#962228] animate-pulse" />
+              <span className="text-xs font-bold tracking-[0.2em] uppercase text-[#962228] font-outfit">
+                Technology We Work With
+              </span>
+            </div>
+            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 leading-[1.15] tracking-tight font-plus-jakarta">
+              Our{' '}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#962228] via-[#e63946] to-red-700">
+                Tech Stack
+              </span>
+            </h2>
+          </AnimateOnScroll>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {techCategories.map((category, catIndex) => (
+              <motion.div
+                key={category.name}
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: catIndex * 0.08 }}
+                className="rounded-2xl border border-slate-200 bg-slate-50 p-6 sm:p-7"
+              >
+                <h3 className="text-xs font-bold uppercase tracking-[0.15em] text-[#962228] mb-5 font-outfit">
+                  {category.name}
+                </h3>
+                <div className="flex flex-wrap gap-2.5">
+                  {category.items.map((tech) => {
+                    const Icon = tech.Icon
+                    return (
+                      <div
+                        key={tech.name}
+                        className="group flex items-center gap-2 px-3 py-2 rounded-xl bg-white border border-slate-200 hover:border-[#962228]/40 hover:shadow-md transition-all duration-300"
+                      >
+                        <Icon size={16} style={{ color: tech.color }} className="flex-shrink-0 group-hover:scale-110 transition-transform duration-300" />
+                        <span className="text-xs font-semibold text-slate-700 font-outfit whitespace-nowrap">
+                          {tech.name}
+                        </span>
+                      </div>
+                    )
+                  })}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* Leadership - Premium Dark Theme */}
       <section className="relative bg-[#111216] py-32 overflow-hidden">

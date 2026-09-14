@@ -397,33 +397,6 @@ export default function ServicesPreview() {
             })}
           </div>
         </div>
-
-        {/* Bottom Feature Strip Highlights */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="mt-10 pt-10 border-t border-slate-300/80 grid grid-cols-1 sm:grid-cols-3 gap-6 text-center sm:text-left"
-        >
-          {highlights.map((item) => {
-            const ItemIcon = item.icon
-            return (
-              <div
-                key={item.title}
-                className="flex items-center justify-center sm:justify-start gap-4 p-4 rounded-2xl bg-white/70 border border-white/90 shadow-[0_4px_20px_rgba(0,0,0,0.03)] backdrop-blur-md hover:border-slate-300 transition-colors"
-              >
-                <div className="p-3 bg-[#962228]/10 border border-[#962228]/20 rounded-xl text-[#962228]">
-                  <ItemIcon className="w-5 h-5" />
-                </div>
-                <div>
-                  <div className="text-sm font-semibold text-slate-900 font-outfit">{item.title}</div>
-                  <div className="text-xs text-slate-600 font-light">{item.desc}</div>
-                </div>
-              </div>
-            )
-          })}
-        </motion.div>
       </div>
     </section>
   )

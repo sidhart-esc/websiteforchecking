@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { motion } from 'framer-motion'
 import { Building2, Handshake, Trophy, Calendar, ArrowRight, UserCircle2 } from 'lucide-react'
 import CTAStrip from '@/components/sections/CTAStrip'
 import PageTransition from '@/components/ui/PageTransition'
@@ -75,43 +76,59 @@ export default function NewsPage() {
   return (
     <PageTransition>
       {/* Hero */}
-      <section className="relative bg-black pt-32 pb-20 overflow-hidden">
-        <div className="absolute inset-0">
+      <section className="relative pt-40 pb-32 overflow-hidden min-h-[60vh] flex items-center justify-start text-left bg-black">
+        {/* Prominent Left-Aligned Hero Image — sizing/position matched to the
+            Blog page hero so the ESC-keycap diorama lands in the same spot
+            on both pages. */}
+        <div className="absolute inset-y-0 left-0 w-full lg:w-9/12 pt-12 sm:pt-16 z-0">
           <Image
             src="/images/news.png"
-            alt="A man reading the daily news at a desk inside a glowing ESC key"
+            alt="ESC News"
             fill
             priority
             sizes="100vw"
-            className="object-contain"
-            style={{ objectPosition: 'right center' }}
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-black via-black/85 to-black/10" />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/60" />
-          <div
-            className="absolute inset-0 mix-blend-overlay opacity-40"
-            style={{ background: 'radial-gradient(ellipse 55% 65% at 78% 50%, rgba(150,34,40,0.5) 0%, transparent 70%)' }}
+            className="object-contain object-left lg:object-[10%_center] opacity-95 filter drop-shadow-[0_20px_50px_rgba(0,0,0,0.8)]"
+            unoptimized={true}
           />
         </div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <AnimateOnScroll direction="up" className="max-w-2xl">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-[2px]" style={{ backgroundColor: '#962228' }} />
-              <span className="text-xs font-semibold tracking-[0.2em] uppercase text-gray-400">
-                Latest Updates
-              </span>
-            </div>
-            <h1 className="text-4xl sm:text-5xl font-light text-white mb-6">
-              News &{' '}
-              <span className="font-bold" style={{ color: '#962228' }}>
-                Announcements
-              </span>
-            </h1>
-            <p className="text-gray-400 text-lg max-w-2xl leading-relaxed">
-              The latest news, press releases, and corporate announcements from ESC Utility Services.
-            </p>
-          </AnimateOnScroll>
+        {/* Ambient Gradients - keeping image clear on left, readable text on right */}
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-black/50 to-black z-0 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black z-0 pointer-events-none" />
+
+        {/* Ambient background glow */}
+        <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-[600px] h-[600px] bg-[#962228]/20 rounded-full blur-[150px] pointer-events-none" />
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full flex justify-end">
+          <div className="max-w-xl lg:max-w-2xl text-right">
+            <AnimateOnScroll direction="up">
+              <div className="flex items-center justify-end gap-2 mb-8">
+                <span className="text-sm font-semibold tracking-[0.2em] uppercase text-gray-400 font-outfit">
+                  Latest Updates
+                </span>
+                <div className="w-8 h-[2px]" style={{ backgroundColor: '#962228' }} />
+              </div>
+              <h1 className="text-6xl sm:text-7xl lg:text-8xl font-light text-white mb-8 tracking-tight font-plus-jakarta">
+                Our{' '}
+                <span className="font-extrabold" style={{ color: '#e0575f' }}>
+                  News
+                </span>
+              </h1>
+              <p className="text-gray-300 text-xl sm:text-2xl leading-relaxed font-light mb-12">
+                The latest news, press releases, and corporate announcements from ESC Utility Services.
+              </p>
+              
+              {/* Scroll down indicator */}
+              <motion.div
+                animate={{ y: [0, 8, 0] }}
+                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                className="flex flex-col items-end justify-end text-gray-400 mt-16"
+              >
+                <span className="text-xs uppercase tracking-widest mb-3 font-outfit font-bold">Scroll To Explore</span>
+                <div className="w-[2px] h-12 bg-gradient-to-b from-[#e0575f] to-transparent" />
+              </motion.div>
+            </AnimateOnScroll>
+          </div>
         </div>
       </section>
 

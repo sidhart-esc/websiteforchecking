@@ -21,13 +21,121 @@ import {
   Database,
   Layers,
   Network,
+  Waypoints,
+  Route,
+  Ruler,
+  ListChecks,
+  Camera,
+  ClipboardCheck,
+  TrendingUp,
+  MessagesSquare,
+  ShieldAlert,
+  Activity,
+  Radar,
+  BrainCircuit,
+  HeartPulse,
+  Siren,
+  ScanLine,
+  FileText,
+  CloudRain,
+  Users,
 } from 'lucide-react'
+import Image from 'next/image'
+
+// Reference one-pager designs are in public/images/lab/ — drop the matching
+// file in for each `image` path below and it renders immediately, no code
+// changes needed.
+const caseStudies = [
+  {
+    tag: 'CASE STUDY // GRID DIGITAL TWIN',
+    title: 'Spatial Digital Twins: Automated Missing Asset Mapping',
+    image: '/images/lab/case-study-digital-twin-v2.png',
+    description:
+      'In modern electrical distribution, unmapped physical hardware leads to costly planning delays. Our Spatial Digital Twin automatically aligns unmapped grid points with the nearest viable road network, calculates real-world street-routing distances, and computes precise cable-run estimates for trenching planning.',
+    bullets: [
+      { icon: Waypoints, label: 'Dynamic Snapping' },
+      { icon: Route, label: 'True Road Routing' },
+      { icon: Ruler, label: 'Cable Run Estimates' },
+      { icon: ListChecks, label: 'Risk-Prioritized Gaps' },
+    ],
+  },
+  {
+    tag: 'CASE STUDY // CUSTOMER PLATFORM',
+    title: 'Smart Meter Reading & Customer Portal',
+    image: '/images/lab/case-study-smart-meter-portal-v2.png',
+    // This source is a tall infographic poster (headline text up top) rather
+    // than a plain photo — shift the crop down so the card shows the actual
+    // tablet product screen instead of just blank header space.
+    imagePosition: '50% 55%',
+    description:
+      'Our AI-powered utility platform empowers customers to take control of their energy data — capturing and submitting meter readings directly through the app, anytime, anywhere, with automated support bridging customer convenience and back-office operations.',
+    bullets: [
+      { icon: Camera, label: 'Instant Photo Capture (OCR)' },
+      { icon: ClipboardCheck, label: 'Manual & Offline Entry' },
+      { icon: TrendingUp, label: 'Smart Analytics' },
+      { icon: MessagesSquare, label: '24/7 AI Chatbot Support' },
+    ],
+  },
+  {
+    tag: 'CASE STUDY // ENERGY FORECASTING',
+    title: 'Electricity Price Forecasting',
+    image: '/images/lab/case-study-price-forecasting-v2.png',
+    description:
+      'An automated system predicting electricity prices in the German-Luxembourg (DE-LU) market — generating 96 individual price forecasts every day, pulling official market data from ENTSO-E, and correcting anomalies before they can ruin a forecast.',
+    bullets: [
+      { icon: TrendingUp, label: '96 Daily Forecasts' },
+      { icon: Database, label: 'Automated ENTSO-E Ingestion' },
+      { icon: ShieldAlert, label: 'Smart Error Correction' },
+      { icon: Activity, label: 'Live Power BI Dashboards' },
+    ],
+  },
+  {
+    tag: 'CASE STUDY // GRID VIGILANCE',
+    title: 'NetzWächter AI — The Future of Grid Vigilance',
+    image: '/images/lab/case-study-netzwachter-ai-v2.png',
+    description:
+      'A sophisticated AI-driven guard that identifies, predicts, and resolves network incidents with surgical precision — detecting the subtle signatures of potential failures long before an outage occurs, and maintaining a real-time Digital Twin of the entire grid.',
+    bullets: [
+      { icon: Radar, label: 'Predictive Fault Detection' },
+      { icon: BrainCircuit, label: 'Real-Time Digital Twin' },
+      { icon: Siren, label: 'Automated Triage' },
+      { icon: HeartPulse, label: 'Toward a Self-Healing Grid' },
+    ],
+  },
+  {
+    tag: 'CASE STUDY // BILLING & VALIDATION',
+    title: 'AI-Enabled Meter Reading Validation & Bill Understanding',
+    image: '/images/lab/case-study-zaehlerstandverwaltung-v2.png',
+    description:
+      'A white-label platform for German utility providers giving customers accurate meter readings and transparent billing — extracting digits directly from photos, flagging anomalies before they become billing disputes, and answering questions in plain language.',
+    bullets: [
+      { icon: Camera, label: 'Photo-Based Reading' },
+      { icon: ScanLine, label: 'Smart Anomaly Validation' },
+      { icon: FileText, label: 'Plain-Language Bill Assistant' },
+      { icon: ShieldCheck, label: 'GDPR & BDSG Compliant' },
+    ],
+  },
+  {
+    tag: 'CASE STUDY // INCIDENT RESOLUTION',
+    title: 'Grid Management: Smart Grid-Störungsmanager',
+    image: '/images/lab/case-study-stoerungsmanager-v2.png',
+    description:
+      'An intelligent copilot that works alongside grid operators and technicians — grouping technical alarms into one clear incident, cross-referencing weather and equipment data to suggest the cause, and drafting the repair paperwork automatically. A human always approves every action.',
+    bullets: [
+      { icon: Siren, label: 'Alarm Correlation' },
+      { icon: CloudRain, label: 'Weather & Equipment Context' },
+      { icon: ClipboardCheck, label: 'Auto-Drafted Repair Tickets' },
+      { icon: Users, label: 'Human-Approved Actions' },
+    ],
+  },
+]
 
 import SplineRobot from '@/components/ui/SplineRobot'
 import AnimateOnScroll from '@/components/ui/AnimateOnScroll'
 import StaggerContainer, { StaggerItem } from '@/components/ui/StaggerContainer'
 import PageTransition from '@/components/ui/PageTransition'
 import CTAStrip from '@/components/sections/CTAStrip'
+import HeroBridge from '@/components/sections/HeroBridge'
 
 export default function LabPage() {
   const [isMobile, setIsMobile] = useState(false)
@@ -154,6 +262,11 @@ export default function LabPage() {
                       <span className="group-hover:translate-x-1 transition-transform">→</span>
                     </a>
                     <span className="text-slate-400">|</span>
+                    <a href="#case-studies" className="flex items-center gap-2 hover:text-[#962228] transition-colors group">
+                      <span>View Case Studies</span>
+                      <span className="group-hover:translate-x-1 transition-transform">→</span>
+                    </a>
+                    <span className="text-slate-400">|</span>
                     <a href="#manifesto" className="flex items-center gap-2 hover:text-[#962228] transition-colors group">
                       <span>Read Manifesto</span>
                       <span className="group-hover:translate-x-1 transition-transform">→</span>
@@ -180,6 +293,9 @@ export default function LabPage() {
             </div>
           </div>
         </section>
+
+        {/* Indo-German Laser Banner Bridge */}
+        <HeroBridge />
 
 
         {/* ========================================================= */}
@@ -403,6 +519,76 @@ export default function LabPage() {
 
             </div>
 
+          </div>
+        </section>
+
+
+        {/* ========================================================= */}
+        {/* 2B. CASE STUDIES SECTION (SILVER GLASS IMAGE CARDS) */}
+        {/* ========================================================= */}
+        <section id="case-studies" className="py-32 px-4 sm:px-6 lg:px-8 relative z-10 bg-gradient-to-b from-[#e2e8f0] via-[#f1f5f9] to-[#cbd5e1] border-b border-slate-300/80">
+          {/* Silver Metallic Grid Overlay */}
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,#00000008_1px,transparent_1px),linear-gradient(to_bottom,#00000008_1px,transparent_1px)] bg-[size:3.5rem_3.5rem] [mask-image:radial-gradient(ellipse_75%_65%_at_50%_45%,#000_70%,transparent_100%)] pointer-events-none" />
+
+          <div className="max-w-7xl mx-auto relative z-10">
+
+            <AnimateOnScroll className="mb-20 text-left">
+              <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/80 border border-slate-300 shadow-sm mb-4 backdrop-blur-md">
+                <span className="w-2 h-2 rounded-full bg-[#962228] animate-pulse" />
+                <span className="text-xs font-mono font-bold tracking-[0.25em] uppercase text-[#962228]">
+                  PROVEN IN PRODUCTION
+                </span>
+              </div>
+              <h2 className="text-4xl sm:text-6xl font-black tracking-tight text-slate-900 uppercase leading-none font-plus-jakarta">
+                CASE <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#962228] via-[#e63946] to-red-700">STUDIES</span>
+              </h2>
+            </AnimateOnScroll>
+
+            <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10">
+              {caseStudies.map((study, i) => (
+                <StaggerItem key={study.title}>
+                  <div className="h-full bg-white/85 border border-white/90 hover:border-[#962228]/40 rounded-3xl overflow-hidden transition-all duration-500 shadow-[0_20px_50px_rgba(0,0,0,0.06)] hover:shadow-[0_25px_60px_rgba(150,34,40,0.18)] backdrop-blur-2xl flex flex-col group">
+
+                    {/* Reference Image — drop the matching file into public/images/lab/ */}
+                    <div className="relative w-full aspect-[4/5] sm:aspect-[16/10] bg-slate-950 overflow-hidden">
+                      <Image
+                        src={study.image}
+                        alt={study.title}
+                        fill
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                        style={{ objectPosition: study.imagePosition ?? '50% 0%' }}
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      />
+                      <span className="absolute top-4 right-4 inline-flex items-center px-3 py-1 rounded-md text-[10px] font-bold uppercase tracking-widest text-white bg-[#962228] shadow-md">
+                        Case Study
+                      </span>
+                    </div>
+
+                    {/* Content */}
+                    <div className="p-8 sm:p-10 flex-1 flex flex-col">
+                      <span className="text-xs font-mono font-bold tracking-wider text-[#962228] uppercase mb-3">
+                        {study.tag}
+                      </span>
+                      <h3 className="text-2xl sm:text-3xl font-black text-slate-950 tracking-tight leading-tight font-plus-jakarta mb-4">
+                        {study.title}
+                      </h3>
+                      <p className="text-slate-700 leading-relaxed text-sm sm:text-base font-normal mb-6">
+                        {study.description}
+                      </p>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-auto pt-2">
+                        {study.bullets.map((item, bi) => (
+                          <div key={bi} className="flex items-center gap-2.5 text-xs sm:text-sm text-slate-800 font-semibold">
+                            <item.icon size={15} className="text-[#962228] flex-shrink-0" />
+                            <span>{item.label}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </StaggerItem>
+              ))}
+            </StaggerContainer>
           </div>
         </section>
 

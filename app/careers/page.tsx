@@ -3,7 +3,10 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { motion, type Transition } from 'framer-motion'
+import { Globe, Rocket, TrendingUp, Home, HeartHandshake, HeartPulse } from 'lucide-react'
 import CTAStrip from '@/components/sections/CTAStrip'
+import HeroBridge from '@/components/sections/HeroBridge'
 import PageTransition from '@/components/ui/PageTransition'
 import AnimateOnScroll from '@/components/ui/AnimateOnScroll'
 import StaggerContainer, { StaggerItem } from '@/components/ui/StaggerContainer'
@@ -45,12 +48,53 @@ const defaultOpenings: JobListingItem[] = [
   },
 ]
 
+// Per-icon "living" animation — a lightweight, brand-colored stand-in for an
+// animated GIF. Crisper than a GIF at any size and themeable, since it's just
+// the SVG icon in motion rather than a fixed-palette raster loop.
+type MotionPreset = 'spin' | 'launch' | 'grow' | 'breathe' | 'heartbeat'
+
+const motionPresets: Record<MotionPreset, { animate: Record<string, number[]>; transition: Transition }> = {
+  spin: {
+    animate: { rotateY: [0, 360] },
+    transition: { duration: 4, repeat: Infinity, ease: 'linear' },
+  },
+  launch: {
+    animate: { y: [0, -6, 0], rotate: [-6, 6, -6] },
+    transition: { duration: 2.4, repeat: Infinity, ease: 'easeInOut' },
+  },
+  grow: {
+    animate: { y: [0, -4, 0] },
+    transition: { duration: 1.8, repeat: Infinity, ease: 'easeInOut' },
+  },
+  breathe: {
+    animate: { scale: [1, 1.1, 1] },
+    transition: { duration: 3, repeat: Infinity, ease: 'easeInOut' },
+  },
+  heartbeat: {
+    animate: { scale: [1, 1.2, 1, 1.12, 1] },
+    transition: { duration: 1.6, repeat: Infinity, ease: 'easeInOut' },
+  },
+}
+
 const perks = [
-  { icon: '🌍', title: 'Global Exposure', description: 'Work with clients and colleagues across India and Europe' },
-  { icon: '🚀', title: 'Cutting-Edge Tech', description: 'Work on AI, automation, and modern software for critical infrastructure' },
-  { icon: '📈', title: 'Career Growth', description: 'Clear growth paths with mentorship from senior engineers' },
-  { icon: '🏠', title: 'Flexible Work', description: 'Hybrid work model with flexible hours' },
-  { icon: '🤝', title: 'Inclusive Culture', description: 'Diverse Indo-German team that values every voice' },
+  {
+    icon: Globe,
+    motion: 'spin' as MotionPreset,
+    title: 'Global Exposure',
+    description: 'Work with clients and colleagues across India and Europe, collaborating daily across time zones and engineering disciplines on infrastructure that matters.',
+    featured: true,
+  },
+  {
+    icon: Rocket,
+    motion: 'launch' as MotionPreset,
+    title: 'Cutting-Edge Tech',
+    description: 'Work on AI, automation, and modern software for critical infrastructure — solving problems most engineers never get the chance to touch.',
+    featured: true,
+  },
+  { icon: TrendingUp, motion: 'grow' as MotionPreset, title: 'Career Growth', description: 'Clear growth paths with mentorship from senior engineers.' },
+  { icon: Home, motion: 'breathe' as MotionPreset, title: 'Flexible Work', description: 'Hybrid work model with flexible hours that fit your life.' },
+  { icon: HeartHandshake, motion: 'heartbeat' as MotionPreset, title: 'Inclusive Culture', description: 'A diverse Indo-German team that values every voice at the table.' },
+  { icon: HeartPulse, motion: 'heartbeat' as MotionPreset, title: 'Health & Wellness', description: 'Comprehensive health coverage and wellness support for you and your family.' },
 ]
 
 export default function CareersPage() {
@@ -73,42 +117,60 @@ export default function CareersPage() {
 
   return (
     <PageTransition>
-      {/* Hero */}
-      <section className="relative pt-40 pb-32 overflow-hidden flex items-center justify-center min-h-[60vh] bg-[#060608]">
+      {/* Silverish Hero */}
+      <section className="relative pt-40 pb-32 overflow-hidden min-h-[60vh] flex items-center justify-start text-left bg-gradient-to-br from-slate-100 via-slate-200/60 to-slate-100">
+        {/* Background image — ESC keyboard image first, then silver overlay */}
         <div className="absolute inset-0 z-0">
           <Image
             src="/images/careers.png"
-            alt="Careers Hero"
+            alt="ESC Careers"
             fill
-            className="object-cover object-center opacity-40"
             priority
+            sizes="100vw"
+            className="object-cover object-[center_75%] opacity-95"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#060608] via-transparent to-[#060608] opacity-80" />
-          <div className="absolute inset-0 bg-gradient-to-l from-[#060608] via-[#060608]/80 to-transparent opacity-90" />
+          <div className="absolute inset-0 bg-gradient-to-l from-slate-100/85 via-slate-100/40 to-transparent z-10 pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-b from-slate-100/30 via-transparent to-slate-100/60 z-10 pointer-events-none" />
         </div>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-end w-full">
+        {/* Ambient background glow */}
+        <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-[600px] h-[600px] bg-[#962228]/10 rounded-full blur-[150px] pointer-events-none" />
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full flex justify-end">
           <div className="max-w-2xl text-right">
             <AnimateOnScroll direction="up">
-              <div className="flex items-center justify-end gap-2 mb-6">
-                <span className="text-xs font-semibold tracking-[0.2em] uppercase text-gray-400">
+              <div className="flex items-center justify-end gap-2 mb-8">
+                <span className="text-sm font-semibold tracking-[0.2em] uppercase text-slate-600 font-outfit">
                   Join the Team
                 </span>
                 <div className="w-8 h-[2px]" style={{ backgroundColor: '#962228' }} />
               </div>
-              <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold text-white mb-6 tracking-tight drop-shadow-xl">
-                Build the future of <br/>
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#962228] via-[#e63946] to-red-400">
-                  energy technology
+              <h1 className="text-6xl sm:text-7xl lg:text-8xl font-light text-slate-900 mb-8 tracking-tight font-plus-jakarta">
+                Our{' '}
+                <span className="font-extrabold" style={{ color: '#962228' }}>
+                  Careers
                 </span>
               </h1>
-              <p className="text-gray-300 text-lg sm:text-xl max-w-2xl ml-auto leading-relaxed font-light drop-shadow-lg">
-                Join a team of engineers, AI specialists, and HR domain experts working on technology that powers critical infrastructure worldwide.
+              <p className="text-slate-950 text-xl sm:text-2xl leading-relaxed font-semibold mb-12 drop-shadow-sm">
+                Join a team of engineers, AI specialists, and utility domain experts building technology for critical infrastructure worldwide.
               </p>
+              
+              {/* Scroll down indicator */}
+              <motion.div
+                animate={{ y: [0, 8, 0] }}
+                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                className="flex flex-col items-end justify-end text-slate-500 mt-16"
+              >
+                <span className="text-xs uppercase tracking-widest mb-3 font-outfit font-bold text-slate-600">Scroll To Explore</span>
+                <div className="w-[2px] h-12 bg-gradient-to-b from-[#962228] to-transparent" />
+              </motion.div>
             </AnimateOnScroll>
           </div>
         </div>
       </section>
+
+      {/* Indo-German Laser Banner Bridge */}
+      <HeroBridge />
 
       {/* Perks (Why ESC) Section in Silver Theme */}
       <section className="bg-gradient-to-b from-[#e2e8f0] via-[#f1f5f9] to-[#e2e8f0] py-24 relative overflow-hidden border-b border-slate-300/80">
@@ -131,24 +193,70 @@ export default function CareersPage() {
             </h2>
           </AnimateOnScroll>
 
-          <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {perks.map((perk) => (
-              <StaggerItem key={perk.title}>
-                <div className="group relative flex flex-col p-8 rounded-3xl bg-white/80 border border-white/90 shadow-[0_10px_30px_rgba(0,0,0,0.05)] backdrop-blur-xl hover:shadow-[0_20px_40px_rgba(150,34,40,0.16)] hover:border-[#962228]/40 transition-all duration-300 overflow-hidden">
-                  {/* Crimson specular hover bar */}
-                  <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-[#962228] via-[#e63946] to-[#962228] scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-center" />
+          {/* Featured pair — the two most compelling reasons get room to breathe */}
+          <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            {perks.filter((perk) => perk.featured).map((perk) => {
+              const Icon = perk.icon
+              return (
+                <StaggerItem key={perk.title}>
+                  <div className="group relative h-full flex flex-col justify-center p-8 sm:p-10 rounded-3xl bg-white/80 border border-white/90 shadow-[0_10px_30px_rgba(0,0,0,0.05)] backdrop-blur-xl hover:shadow-[0_25px_50px_rgba(150,34,40,0.18)] hover:border-[#962228]/40 transition-all duration-500 overflow-hidden">
+                    {/* Giant watermark icon */}
+                    <Icon className="absolute -right-8 -bottom-8 w-44 h-44 text-[#962228]/[0.06] group-hover:text-[#962228]/[0.1] group-hover:scale-105 transition-all duration-500" strokeWidth={1} />
+                    {/* Top accent reveal */}
+                    <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-[#962228] via-[#e63946] to-[#962228] scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
 
-                  <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl mb-6 bg-[#962228]/10 border border-[#962228]/20 text-[#962228] group-hover:bg-[#962228] group-hover:text-white transition-all duration-300 shadow-sm">
-                    {perk.icon}
+                    <div className="relative z-10 flex items-start gap-5">
+                      <div
+                        className="w-16 h-16 rounded-2xl flex items-center justify-center flex-shrink-0 bg-gradient-to-br from-[#962228] to-[#e63946] text-white shadow-lg shadow-[#962228]/30 group-hover:scale-110 transition-transform duration-300"
+                        style={{ perspective: 300 }}
+                      >
+                        <motion.div
+                          animate={motionPresets[perk.motion].animate}
+                          transition={motionPresets[perk.motion].transition}
+                          style={{ transformStyle: 'preserve-3d' }}
+                        >
+                          <Icon size={28} />
+                        </motion.div>
+                      </div>
+                      <div>
+                        <h3 className="text-2xl font-extrabold text-slate-950 mb-2 tracking-tight font-plus-jakarta">{perk.title}</h3>
+                        <p className="text-base text-slate-600 font-normal leading-relaxed max-w-md">{perk.description}</p>
+                      </div>
+                    </div>
                   </div>
+                </StaggerItem>
+              )
+            })}
+          </StaggerContainer>
 
-                  <div>
-                    <h3 className="text-xl font-extrabold text-slate-950 mb-2 tracking-tight font-plus-jakarta">{perk.title}</h3>
-                    <p className="text-sm text-slate-700 font-normal leading-relaxed">{perk.description}</p>
+          {/* Remaining perks — tighter supporting grid */}
+          <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {perks.filter((perk) => !perk.featured).map((perk) => {
+              const Icon = perk.icon
+              return (
+                <StaggerItem key={perk.title}>
+                  <div className="group relative h-full flex flex-col p-7 rounded-2xl bg-white/80 border border-white/90 shadow-[0_10px_30px_rgba(0,0,0,0.05)] backdrop-blur-xl hover:shadow-[0_20px_40px_rgba(150,34,40,0.16)] hover:border-[#962228]/40 hover:-translate-y-1 transition-all duration-300 overflow-hidden">
+                    <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-[#962228] via-[#e63946] to-[#962228] scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-center" />
+
+                    <div
+                      className="w-12 h-12 rounded-xl flex items-center justify-center mb-5 bg-[#962228]/10 border border-[#962228]/20 text-[#962228] group-hover:bg-[#962228] group-hover:text-white group-hover:scale-110 transition-all duration-300 shadow-sm"
+                      style={{ perspective: 300 }}
+                    >
+                      <motion.div
+                        animate={motionPresets[perk.motion].animate}
+                        transition={motionPresets[perk.motion].transition}
+                        style={{ transformStyle: 'preserve-3d' }}
+                      >
+                        <Icon size={22} />
+                      </motion.div>
+                    </div>
+
+                    <h3 className="text-lg font-extrabold text-slate-950 mb-1.5 tracking-tight font-plus-jakarta">{perk.title}</h3>
+                    <p className="text-sm text-slate-600 font-normal leading-relaxed">{perk.description}</p>
                   </div>
-                </div>
-              </StaggerItem>
-            ))}
+                </StaggerItem>
+              )
+            })}
           </StaggerContainer>
         </div>
       </section>

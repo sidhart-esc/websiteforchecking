@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { Phone, Mail, MapPin } from 'lucide-react'
 
 const services = [
   'Software Engineering',
@@ -100,13 +101,16 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Bottom Bar */}
+      {/* Bottom Bar: Copyright & Legal */}
       <div className="border-t border-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row items-center justify-between gap-2">
           <p className="text-xs text-gray-500">
             © {new Date().getFullYear()} ESC Utility Services Pvt. Ltd. All rights reserved.
           </p>
           <div className="flex gap-4">
+            <Link href="/certifications" className="text-xs text-gray-500 hover:text-gray-300 transition-colors">
+              Certifications
+            </Link>
             <Link href="/data-protection" className="text-xs text-gray-500 hover:text-gray-300 transition-colors">
               Data Protection
             </Link>
@@ -114,6 +118,56 @@ export default function Footer() {
               Imprint
             </Link>
           </div>
+        </div>
+      </div>
+
+      {/* ========================================================================= */}
+      {/* ABSOLUTE BOTTOM BAR (Mirroring Header Contact Bar at the very end of page) */}
+      {/* ========================================================================= */}
+      <div className="bg-[#801c21] text-white/90 border-t border-red-950/40 py-2.5">
+        <div className="w-full px-3 sm:px-5 lg:px-6 flex flex-wrap items-center justify-between text-xs font-medium gap-3">
+          
+          {/* Left Info: Phone, Email & Address */}
+          <div className="flex items-center gap-3 sm:gap-6 flex-wrap">
+            <a
+              href="tel:+4921194684130"
+              className="flex items-center gap-1.5 hover:text-white transition-colors whitespace-nowrap"
+            >
+              <Phone size={12} className="text-red-300" />
+              <span>0211 94684130</span>
+            </a>
+
+            <a
+              href="mailto:info@esc-ind.com"
+              className="flex items-center gap-1.5 hover:text-white transition-colors whitespace-nowrap"
+            >
+              <Mail size={12} className="text-red-300" />
+              <span>info@esc-ind.com</span>
+            </a>
+
+            <span className="flex items-center gap-1.5 text-white/90 whitespace-nowrap">
+              <MapPin size={12} className="text-red-300" />
+              <span>Goltsteinstraße 30–31, 40211 Düsseldorf</span>
+            </span>
+          </div>
+
+          {/* Right Social Action: LinkedIn */}
+          <div className="flex items-center gap-3 pl-3 border-l border-white/20">
+            <a
+              href="https://www.linkedin.com/company/esc-utility-services"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-white transition-colors p-1 rounded hover:bg-white/10 flex items-center gap-1.5 text-red-200"
+              title="LinkedIn"
+              aria-label="LinkedIn Profile"
+            >
+              <svg className="w-3.5 h-3.5 fill-current text-red-200" viewBox="0 0 24 24">
+                <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 10.9v8.37H9.25V10.9H6.46M7.86 6.7a1.63 1.63 0 1 0 1.63 1.63A1.63 1.63 0 0 0 7.86 6.7z"/>
+              </svg>
+              <span className="text-[11px] font-semibold tracking-wide">Connect on LinkedIn</span>
+            </a>
+          </div>
+
         </div>
       </div>
 

@@ -52,8 +52,11 @@ const LOCATIONS: Record<LocationKey, LocationDetails> = {
     email: 'support@esc-ind.com',
     phone: '+91 8086 22 8000',
     mapsUrl: 'https://maps.google.com/?q=Yamuna+Building+Technopark+Phase+3+Trivandrum+Kerala+India',
+    // Google retired the free keyless "output=embed" iframe trick this used
+    // to rely on (it now 404s for every query, with or without an API key).
+    // Using OpenStreetMap's embed instead — free, no key required.
     embedMapUrl:
-      'https://maps.google.com/maps?q=Technopark+Phase+3+Yamuna+Building+Trivandrum+Kerala+India&t=&z=15&ie=UTF8&iwloc=&output=embed',
+      'https://www.openstreetmap.org/export/embed.html?bbox=76.8717,8.5514,76.8877,8.5634&layer=mapnik&marker=8.5574,76.8797',
     coordinates: '8.5574° N, 76.8797° E',
     timezone: 'IST (UTC+5:30)',
   },
@@ -70,7 +73,7 @@ const LOCATIONS: Record<LocationKey, LocationDetails> = {
     phone: '+49 (211) 138 66 454',
     mapsUrl: 'https://maps.google.com/?q=Goltsteinstra%C3%9Fe+30-31+40211+D%C3%BCsseldorf+Germany',
     embedMapUrl:
-      'https://maps.google.com/maps?q=Goltsteinstra%C3%9Fe+30-31+40211+D%C3%BCsseldorf+Germany&t=&z=15&ie=UTF8&iwloc=&output=embed',
+      'https://www.openstreetmap.org/export/embed.html?bbox=6.7655,51.2217,6.7815,51.2337&layer=mapnik&marker=51.2277,6.7735',
     coordinates: '51.2277° N, 6.7735° E',
     timezone: 'CET (UTC+1)',
   },
@@ -384,10 +387,10 @@ export default function ContactPage() {
                     </div>
                   </div>
 
-                  {/* Right Column: Embedded Interactive Google Map */}
+                  {/* Right Column: Embedded Interactive Map (OpenStreetMap) */}
                   <div className="lg:col-span-7 relative w-full h-[360px] lg:h-auto min-h-[380px] bg-slate-200">
                     <iframe
-                      title={`Google Map for ${currentLocation.officeName}`}
+                      title={`Map for ${currentLocation.officeName}`}
                       src={currentLocation.embedMapUrl}
                       className="w-full h-full border-0 opacity-90 hover:opacity-100 transition-opacity duration-300"
                       allowFullScreen={false}

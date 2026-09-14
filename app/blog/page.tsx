@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { motion } from 'framer-motion'
 import CTAStrip from '@/components/sections/CTAStrip'
 import PageTransition from '@/components/ui/PageTransition'
 import AnimateOnScroll from '@/components/ui/AnimateOnScroll'
@@ -75,38 +76,58 @@ export default function BlogPage() {
 
   return (
     <PageTransition>
-      {/* Hero — Original Dark Theme */}
-      <section className="relative pt-32 pb-24 overflow-hidden flex items-center min-h-[45vh] bg-[#060608]">
-        <div className="absolute inset-0 z-0">
+      {/* Hero */}
+      <section className="relative pt-40 pb-32 overflow-hidden min-h-[60vh] flex items-center justify-start text-left bg-black">
+        {/* Unclipped Hero Image showing full glowing Red ESC Key diorama */}
+        <div className="absolute inset-y-0 left-0 w-full lg:w-9/12 pt-12 sm:pt-16 z-0">
           <Image
             src="/images/blog.png"
-            alt="Blog Hero"
+            alt="ESC Blog"
             fill
-            className="object-cover object-center opacity-40"
             priority
+            sizes="100vw"
+            className="object-contain object-left lg:object-[0%_center] opacity-95 filter drop-shadow-[0_20px_50px_rgba(0,0,0,0.85)] transform scale-125 lg:scale-[1.3] origin-left -translate-x-44 lg:-translate-x-[380px] transition-transform duration-300"
+            unoptimized={true}
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#060608] via-transparent to-[#060608] opacity-80" />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#060608] via-black/50 to-transparent opacity-80" />
         </div>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full text-left">
-          <AnimateOnScroll direction="up">
-            <div className="flex items-center gap-2 mb-6">
-              <div className="w-8 h-[2px]" style={{ backgroundColor: '#962228' }} />
-              <span className="text-xs font-semibold tracking-[0.2em] uppercase text-gray-400 font-outfit">
-                Insights
-              </span>
-            </div>
-            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold text-white mb-6 tracking-tight drop-shadow-xl font-plus-jakarta">
-              Our <br/>
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#962228] via-[#e63946] to-red-400">
-                Blog
-              </span>
-            </h1>
-            <p className="text-gray-300 text-lg sm:text-xl max-w-2xl leading-relaxed font-light drop-shadow-lg">
-              Practical insights on AI, automation, and software engineering for the Energy and Water industry.
-            </p>
-          </AnimateOnScroll>
+        {/* Ambient Gradients - protecting right text readability while keeping left diorama fully clear */}
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-black/40 to-black z-0 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black z-0 pointer-events-none" />
+
+        {/* Ambient background glow */}
+        <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-[600px] h-[600px] bg-[#962228]/20 rounded-full blur-[150px] pointer-events-none" />
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full flex justify-end">
+          <div className="max-w-xl lg:max-w-2xl text-right">
+            <AnimateOnScroll direction="up">
+              <div className="flex items-center justify-end gap-2 mb-8">
+                <span className="text-sm font-semibold tracking-[0.2em] uppercase text-gray-400 font-outfit">
+                  Insights
+                </span>
+                <div className="w-8 h-[2px]" style={{ backgroundColor: '#962228' }} />
+              </div>
+              <h1 className="text-6xl sm:text-7xl lg:text-8xl font-light text-white mb-8 tracking-tight font-plus-jakarta">
+                Our{' '}
+                <span className="font-extrabold" style={{ color: '#e0575f' }}>
+                  Blog
+                </span>
+              </h1>
+              <p className="text-gray-300 text-xl sm:text-2xl leading-relaxed font-light mb-12">
+                Practical insights on AI, automation, and software engineering for the Energy and Water industry.
+              </p>
+              
+              {/* Scroll down indicator */}
+              <motion.div
+                animate={{ y: [0, 8, 0] }}
+                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                className="flex flex-col items-end justify-end text-gray-400 mt-16"
+              >
+                <span className="text-xs uppercase tracking-widest mb-3 font-outfit font-bold">Scroll To Explore</span>
+                <div className="w-[2px] h-12 bg-gradient-to-b from-[#e0575f] to-transparent" />
+              </motion.div>
+            </AnimateOnScroll>
+          </div>
         </div>
       </section>
 

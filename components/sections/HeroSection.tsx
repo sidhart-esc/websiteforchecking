@@ -66,7 +66,7 @@ export default function HeroSection() {
       </div>
 
       {/* Content Foreground (Text column aligned strictly to the left with zero diorama overlap) */}
-      <div className="relative z-30 max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-12 xl:px-16 w-full">
+      <div className="relative z-30 max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 w-full">
         <div className="max-w-md sm:max-w-lg lg:max-w-xl">
           
           {/* Eyebrow label with line indicator */}
