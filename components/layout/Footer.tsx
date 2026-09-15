@@ -91,10 +91,10 @@ export default function Footer() {
                 Contact
               </h3>
               <a
-                href="mailto:info@escutility.com"
+                href="mailto:info@esc-ind.com"
                 className="text-sm text-gray-400 hover:text-white transition-colors block"
               >
-                info@escutility.com
+                info@esc-ind.com
               </a>
             </div>
           </div>
@@ -130,11 +130,11 @@ export default function Footer() {
           {/* Left Info: Phone, Email & Address */}
           <div className="flex items-center gap-3 sm:gap-6 flex-wrap">
             <a
-              href="tel:+4921194684130"
+              href="tel:+918086228000"
               className="flex items-center gap-1.5 hover:text-white transition-colors whitespace-nowrap"
             >
               <Phone size={12} className="text-red-300" />
-              <span>0211 94684130</span>
+              <span>+91 8086 22 8000</span>
             </a>
 
             <a
@@ -147,7 +147,7 @@ export default function Footer() {
 
             <span className="flex items-center gap-1.5 text-white/90 whitespace-nowrap">
               <MapPin size={12} className="text-red-300" />
-              <span>Goltsteinstraße 30–31, 40211 Düsseldorf</span>
+              <span>Yamuna Building, Technopark Phase 3 campus, Trivandrum</span>
             </span>
           </div>
 

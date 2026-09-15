@@ -92,11 +92,11 @@ export default function Navbar() {
             {/* Left Info: Contact Phone, Email & Address aligned closer to far left */}
             <div className="flex items-center gap-3 sm:gap-5 overflow-x-auto no-scrollbar py-0.5 shrink-0 pl-0 sm:pl-1">
               <a
-                href="tel:+4921194684130"
+                href="tel:+918086228000"
                 className="flex items-center gap-1.5 hover:text-white transition-colors whitespace-nowrap"
               >
                 <Phone size={12} className="text-red-300" />
-                <span>0211 94684130</span>
+                <span>+91 8086 22 8000</span>
               </a>
 
               <a
@@ -109,7 +109,7 @@ export default function Navbar() {
 
               <span className="flex items-center gap-1.5 text-white/90 whitespace-nowrap">
                 <MapPin size={12} className="text-red-300" />
-                <span>Goltsteinstraße 30–31, 40211 Düsseldorf</span>
+                <span>Yamuna Building, Technopark Phase 3 campus, Trivandrum</span>
               </span>
             </div>
 
